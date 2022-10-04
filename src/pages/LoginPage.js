@@ -1,5 +1,5 @@
 import API from '../config/api';
-import { React, useEffect, useState } from 'react'
+import { React, useState } from 'react'
 import Card from 'react-bootstrap/Card'
 import styled from 'styled-components'
 import Form from 'react-bootstrap/Form';
@@ -32,11 +32,6 @@ export default function LoginPage(props) {
   const handleEmail = (e) => setEmail(e.target.value);
   const handlePass = (e) => setPass(e.target.value);
   const navigate = useNavigate();
-
-
-  useEffect(() => {
-    setNotification(null);
-  }, []);
 
   const normalLogin = async () => {
     axios.post(`${API.DOMAIN}/api/auth/login`, {
