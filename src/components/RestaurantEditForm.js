@@ -145,7 +145,11 @@ export default function RestaurantForm() {
                 </h6>
                 <Row>
                     {foods && foods.map(function (object, i) {
-                        return (<Col md={4}> <FoodCard name={object.name} description={object.description} food={object._id} restaurant={resId} handler={setFoods} /> </Col>);
+                        if (!object.deleted) {
+                            return (<Col md={4}> <FoodCard name={object.name} description={object.description} food={object._id} restaurant={resId} handler={setFoods} /> </Col>);
+                        } else {
+                            return " ";
+                        }
                     })}
                 </Row>
                 <Button variant="primary" className="mt-5" size="lg" onClick={updateRestaurant}>
