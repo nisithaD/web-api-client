@@ -8,11 +8,12 @@ import NoMatch from './pages/NoMatch';
 import { loadState } from './utils/session';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminRestaurant from './pages/admin/AdminRestaurant';
+import AdminRestaurantEdit from './pages/admin/AdminRestaurantEdit';
 
 function App() {
   const visitor = loadState();
   const loggedin = (visitor && visitor.state === 'loggedin') ? true : false;
-  console.log(loggedin);
+  console.log('logged in: ' + loggedin);
   return (
     <>
       <Layout>
@@ -22,6 +23,7 @@ function App() {
             <Route exact path='/login' element={<LoginPage />} />
             <Route exact path='/admin/dashboard' element={<AdminDashboard />} />
             <Route exact path='/admin/restaurants' element={<AdminRestaurant />} />
+            <Route exact path='/admin/restaurants/edit' element={<AdminRestaurantEdit />} />
             <Route path='*' element={<NoMatch />} />
           </Routes>
         </Router>

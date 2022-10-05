@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Form, Row, Col, Button } from 'react-bootstrap'
 import axios from 'axios';
 import API from '../config/api';
 import { loadState } from '../utils/session';
 import Notification from './Notification';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
+import FoodFormModal from './FoodFormModal';
+import FoodCard from './FoodCard';
 
 
 export default function RestaurantForm() {
@@ -16,11 +19,43 @@ export default function RestaurantForm() {
     // const [rImage, setImage] = useState();
     const [notification, setNotification] = useState(null);
     const navigate = useNavigate();
+    const [foods, setFoods] = useState();
 
 
-    const createRestaurant = async () => {
+    const search = useLocation().search;
+    const resId = new URLSearchParams(search).get('id');
+
+
+    useEffect(() => {
+        // Get Restaurant id in query params
+        (async function () {
+            try {
+                // Get restaurant Data by Id
+                const res = await axios.get(API.DOMAIN + '/api/restaurants/' + resId, {
+                    headers: {
+                        "x-Authorization": loadState()['token']
+                    }
+                })
+                if (res.status === 200) {
+                    let restaurant = res.data.data;
+
+                    setName(restaurant.name)
+                    setAddress(restaurant.address)
+                    setRating(restaurant.rating)
+                    setLatitude(restaurant.location.lat)
+                    setLongitude(restaurant.location.lng)
+                    setFoods(restaurant.foods);
+                }
+            } catch (e) {
+                setNotification(e.response.data.message)
+            }
+        })();
+
+    }, [resId]);
+
+    const updateRestaurant = async () => {
         try {
-            const response = await axios.post(API.DOMAIN + '/api/restaurants', {
+            const response = await axios.put(API.DOMAIN + '/api/restaurants/' + resId, {
                 name: rName,
                 address: rAddress,
                 rating: rRating,
@@ -39,6 +74,7 @@ export default function RestaurantForm() {
                 navigate('/admin/restaurants/edit?id=' + response.data.data._id);
             }
         } catch (e) {
+            console.log(e);
             setNotification(e.response.data.message)
         }
 
@@ -104,8 +140,16 @@ export default function RestaurantForm() {
                         <Form.Control type="text" value={rLongitude} onChange={(e) => { setLongitude(e.target.value) }} placeholder="89.0000" />
                     </Col>
                 </Form.Group>
-                <Button variant="primary" className="mt-5" size="lg" onClick={createRestaurant}>
-                    Create Restaurant
+                <h6 className='text-info mb-4 mt-5'>Food items
+                    <FoodFormModal restaurant={resId} handler={setFoods} />
+                </h6>
+                <Row>
+                    {foods && foods.map(function (object, i) {
+                        return (<Col md={4}> <FoodCard name={object.name} description={object.description} food={object._id} restaurant={resId} handler={setFoods} /> </Col>);
+                    })}
+                </Row>
+                <Button variant="primary" className="mt-5" size="lg" onClick={updateRestaurant}>
+                    Update Restaurant
                 </Button>
             </Form>
 

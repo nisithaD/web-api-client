@@ -2,34 +2,53 @@ import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useState } from "react";
 import axios from 'axios';
 import API from "../config/api";
-import { useNavigate } from "react-router-dom";
 import Notification from "./Notification";
 
-export default function FoodFormModal(props) {
+export default function FoodEditFormModal(props) {
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
     const [name, setName] = useState();
     const [description, setDescription] = useState();
     const [rating, setRating] = useState();
     const [price, setPrice] = useState();
     const [notification, setNotification] = useState(null);
-    const navigate = useNavigate();
 
-
-    const addToForm = async () => {
+    const launchModal = async () => {
         try {
-            let res = await axios.post(API.DOMAIN + '/api/restaurants/' + props.restaurant + '/foods', [{
+            setShow(true);
+            let res = await axios.get(API.DOMAIN + '/api/restaurants/' + props.restaurant);
+            if (res.status === 200) {
+                let restaurant = res.data.data;
+                let idx = restaurant.foods.findIndex((x) => {
+                    console.log(x._id, props.food);
+                    return x._id === props.food;
+                });
+                let food = restaurant.foods[idx];
+                setName(food.name);
+                setPrice(food.price);
+                setDescription(food.description);
+                setRating(food.rating);
+
+            }
+        } catch (e) {
+            console.log(e)
+            setNotification(e.response.data.data.meessage);
+        }
+    }
+
+
+    const updateToForm = async () => {
+        try {
+            let res = await axios.put(API.DOMAIN + '/api/restaurants/' + props.restaurant + '/foods/' + props.food, {
                 name: name,
                 price: price,
                 rating: rating,
                 description: description
-            }]);
+            });
             if (res.status === 201) {
                 setShow(false);
-                props.handler(res.data.data);
-                navigate('/admin/restaurants/edit?id=' + props.restaurant);
+                props.updateFd(res.data.data.foods);
             }
         } catch (e) {
             console.log(e);
@@ -40,8 +59,8 @@ export default function FoodFormModal(props) {
 
     return (
         <>
-            <Button variant="outline-primary" className="ms-3" onClick={handleShow}>
-                Add Food
+            <Button variant="outline-primary" className="" onClick={launchModal}>
+                Edit
             </Button>
 
             <Modal
@@ -51,7 +70,7 @@ export default function FoodFormModal(props) {
                 keyboard={false}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Add New Food</Modal.Title>
+                    <Modal.Title>Update Food</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {notification !== null &&
@@ -103,7 +122,7 @@ export default function FoodFormModal(props) {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={addToForm}>Add to Restaurant</Button>
+                    <Button variant="primary" onClick={updateToForm}>Update Food</Button>
                 </Modal.Footer>
             </Modal>
         </>

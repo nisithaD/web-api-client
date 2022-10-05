@@ -1,17 +1,21 @@
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import FoodEditFormModal from './FoodEditFormModal';
 
-export default function FoodCard() {
+export default function FoodCard(props) {
+    // console.log(props)
     return (
-        <Card style={{ width: '18rem' }}>
-            <Card.Img variant="top" src="/placeholder.png" />
-            <Card.Body>
-                <Card.Title>Food Name</Card.Title>
-                <Card.Text>
-                    Some description of the food
-                </Card.Text>
-                <Button variant="primary">Edit</Button>
-            </Card.Body>
-        </Card>
+        <>
+            <Card >
+                <Card.Img variant="top" src="/placeholder.png" />
+                <Card.Body>
+                    <Card.Title>{props.name}</Card.Title>
+                    <Card.Text>
+                        {props.description}
+                    </Card.Text>
+                    <FoodEditFormModal food={props.food} restaurant={props.restaurant} updateFd={props.handler} />
+                </Card.Body>
+            </Card>
+
+        </>
     )
 }
