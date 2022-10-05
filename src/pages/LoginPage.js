@@ -14,7 +14,7 @@ const Center = styled.div`
     display:flex;
     align-items:center;
     justify-content:center;
-    height:100%
+    height:100%;
 `
 const Hr = styled.hr`
     color: #ccc;
@@ -22,6 +22,9 @@ const Hr = styled.hr`
     height: 2px;
     border-radius: 2px;
     margin-top:  30px;
+`
+const Wrapper = styled.div`
+  margin-top: 100px;
 `
 
 export default function LoginPage(props) {
@@ -33,7 +36,7 @@ export default function LoginPage(props) {
   const handlePass = (e) => setPass(e.target.value);
   const navigate = useNavigate();
 
-  const normalLogin = async () => {
+  const normalLogin = () => {
     axios.post(`${API.DOMAIN}/api/auth/login`, {
       email: email,
       password: pass
@@ -56,7 +59,7 @@ export default function LoginPage(props) {
 
   return (
     <Center >
-      <div>
+      <Wrapper >
         {notification !== null &&
           <Notification message={notification} />
         }
@@ -91,13 +94,12 @@ export default function LoginPage(props) {
               </div>
               <Hr />
               <div className="d-grid gap-2">
-                <Button variant="outline-success" className='mt-2'><i className="bi bi-google text-success me-4"></i>Google Login</Button>{' '}
+                <a className="btn btn-success mt-2" href="http://localhost:8000/api/auth/google/login?redirect_to=http://localhost:3000/login"><i className="bi bi-google text-success me-4"></i>Google Login</a>
               </div>
-
             </Form>
           </Card.Body>
         </Card>
-      </div>
+      </Wrapper>
     </Center>
   )
 }

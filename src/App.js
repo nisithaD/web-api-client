@@ -6,6 +6,8 @@ import LoginPage from './pages/LoginPage';
 import Layout from './Layout';
 import NoMatch from './pages/NoMatch';
 import { loadState } from './utils/session';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminRestaurant from './pages/admin/AdminRestaurant';
 
 function App() {
   const visitor = loadState();
@@ -18,6 +20,8 @@ function App() {
           <Routes>
             <Route exact path='/' element={loggedin ? (<HomePage />) : (<Navigate to='/login' />)} />
             <Route exact path='/login' element={<LoginPage />} />
+            <Route exact path='/admin/dashboard' element={<AdminDashboard />} />
+            <Route exact path='/admin/restaurants' element={<AdminRestaurant />} />
             <Route path='*' element={<NoMatch />} />
           </Routes>
         </Router>

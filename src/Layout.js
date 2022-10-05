@@ -2,12 +2,18 @@ import React from 'react'
 import NavigationBar from './components/NavigationBar'
 import Container from 'react-bootstrap/Container'
 import styled from 'styled-components'
+import img from './assets/bg.jpg';
 
 const Header = styled.header`
 `
 
 const Main = styled.main`
-    height: calc(100vh - 276px);
+    min-height: calc(100vh - 276px);
+    background-repeat: no-repeat, repeat;
+    background-image: url(${img});
+    background-blend-mode: lighten;
+    background-position: center;
+    background-size:cover;
 `;
 
 const Footer = styled.footer`

@@ -8,7 +8,7 @@ export default function NavgigationBar() {
   return (
     <Navbar bg="light" expand="lg">
       <Container>
-        <Navbar.Brand href="#home"><img height="110px" src="logo.png" alt='Logo' /></Navbar.Brand>
+        <Navbar.Brand href="#home"><img height="110px" src="/logo.png" alt='Logo' /></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
