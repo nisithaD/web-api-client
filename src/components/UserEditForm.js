@@ -58,7 +58,7 @@ export default function UserEditForm() {
                     "x-Authorization": loadState()['token']
                 }
             })
-            if (response.status === 201) {
+            if (response.status === 201) { // type com
                 navigate('/admin/users/edit?id=' + response.data.data._id);
             }
         } catch (e) {
