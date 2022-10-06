@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { Tabs, Tab, Container, Row, Col, Table } from 'react-bootstrap'
 import AdminSidebar from '../../components/AdminSidebar';
 import UserForm from '../../components/UserForm';
 import axios from 'axios';
 import API from '../../config/api';
 import { loadState } from '../../utils/session';
-import { useNavigate } from 'react-router-dom';
+
 
 
 export default function AdminUsers() {
     const [key, setKey] = useState('home');
     const [users, setUsers] = useState();
-    const navigate = useNavigate();
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
     useEffect(() => {
         // Get All Users
 
@@ -40,14 +40,12 @@ export default function AdminUsers() {
                 }
             })
             if (res.status === 200) {
-                let temp = users;
-                let idx = temp.findIndex((x) => {
+                let idx = users.findIndex((x) => {
                     return x._id === uid;
                 });
-                temp.splice(idx, 1);
-
-                setUsers(temp);
-                navigate('/admin/users/');
+                users.splice(idx, 1);
+                // force rerender   
+                forceUpdate();
             }
         } catch (e) {
             console.log(e);

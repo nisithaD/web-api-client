@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { saveState } from '../utils/session';
 import Notification from '../components/Notification';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Center = styled.div`
     display:flex;
@@ -34,21 +34,25 @@ export default function LoginPage(props) {
   const [pass, setPass] = useState('');
   const handleEmail = (e) => setEmail(e.target.value);
   const handlePass = (e) => setPass(e.target.value);
+  const { state } = useLocation();
   const navigate = useNavigate();
+
+  const { from = "/" } = state || {};
 
   const normalLogin = () => {
     axios.post(`${API.DOMAIN}/api/auth/login`, {
       email: email,
       password: pass
-    }).then((response) => {
+    }).then(async (response) => {
       if (response.status === 200) {
         saveState({
           "state": "loggedin",
           "token": response.data.accessToken,
           "expires": response.data.expires
         })
-        console.log('redirecting...')
-        navigate('/')
+        console.log('redirecting...');
+        await new Promise(r => setTimeout(r, 2000)); // sleeps otherwise it doesnt redirects
+        navigate(from);
       }
 
     }).catch((error) => {
