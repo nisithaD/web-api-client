@@ -6,7 +6,7 @@ const Wrapper = styled.div`
         color: #9f9797;
     }
     li +li{
-        margin-left:3px;
+        margin-left: 3px;
     }
 `
 
