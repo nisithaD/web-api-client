@@ -81,12 +81,14 @@ export default function HomePage() {
                   idx = Math.floor(Math.random() * (object.foods.length - 0) + 0);
                   console.log(object.foods[idx].name)
 
+                  let id=object.foods[idx].id;
                   let name = object.foods[idx].name;
                   let description = object.foods[idx].description;
                   let food = object.foods[idx]._id;
                   let restaurant = object._id;
+                  let price = object.foods[idx].price;
 
-                  return <Col md={3}> <FoodCardView name={name} description={description} food={food} restaurant={restaurant} /> </Col>
+                  return <Col md={3}> <FoodCardView id={id} name={name} description={description} food={food} restaurant={restaurant} price={price} /> </Col>
                 } else {
                   return "";
                 }

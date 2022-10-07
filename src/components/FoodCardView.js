@@ -2,6 +2,10 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import RatingStars from './RatingStars';
+import API from '../config/api';
+import axios from 'axios';
+import { loadState } from '../utils/session';
+import { decodeToken } from "react-jwt";
 
 const Wrapper = styled.div`
     .card-body{
@@ -35,10 +39,35 @@ export default function FoodCardView(props) {
                         {props.description}
                     </Card.Text>
                     <RatingStars />
-                    <Button variant="warning"> Add to cart</Button>
+                    <Button variant="warning" className="float-right" onClick={() =>addToCart(props)}>Add to Cart</Button>
                     <Button variant="default" className="ms-2"> <i className="bi bi-heart"></i></Button>
                 </Card.Body>
             </Card>
         </Wrapper>
     )
+}
+
+//add to cart function
+async function addToCart(props) {
+    //jwt token decode
+    let token = loadState()['token'];
+    let user_id = decodeToken(token)._id;
+    try {
+        let res = await axios.post(API.DOMAIN + '/api/users/'+user_id+'/cart', {
+            "outlet": props.restaurant_id,
+            "food": props.id,
+            "quantity": 1,
+            "price": props.price,
+            "lineTotal": props.price
+        }, {
+            headers: {
+                "x-Authorization": loadState()['token']
+            }
+        });
+        if (res.status === 200) {
+            alert("Added to cart");
+        }
+    } catch (e) {
+        console.log(e);
+    }
 }
