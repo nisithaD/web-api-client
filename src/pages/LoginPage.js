@@ -1,5 +1,5 @@
 import API from '../config/api';
-import { React, useState } from 'react'
+import { React, useEffect, useState } from 'react'
 import Card from 'react-bootstrap/Card'
 import styled from 'styled-components'
 import Form from 'react-bootstrap/Form';
@@ -54,7 +54,38 @@ export default function LoginPage(props) {
   const { state } = useLocation();
   const navigate = useNavigate();
 
+  const search = useLocation().search;
+  const code = new URLSearchParams(search).get('code');
+  const uEmail = new URLSearchParams(search).get('email');
+
   const { from = "/" } = state || {};
+
+  useEffect(() => {
+    (async function () {
+      if (code) {
+
+        try {
+          let res = await axios.get(API.DOMAIN + '/api/auth/access', {
+            params: {
+              grantCode: code,
+              email: uEmail
+            }
+          });
+          if (res.status === 200) {
+            saveState({
+              "state": "loggedin",
+              "token": res.data.accessToken,
+              "expires": res.data.expires
+            })
+            navigate(from);
+          }
+
+        } catch (e) {
+          console.log(e)
+        }
+      }
+    })();
+  }, [uEmail, code, from, navigate]);
 
   const normalLogin = () => {
     axios.post(`${API.DOMAIN}/api/auth/login`, {
