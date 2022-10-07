@@ -61,7 +61,7 @@ export default function HomePage() {
       <SectionWelcome>
         <Container>
           <P100>
-            <Row style={{ "paddingTop": "150px", "paddingBsottom": "150px" }}>
+            <Row style={{ "paddingTop": "70px", "paddingBottom": "150px" }}>
               <Col sm={5}>
                 <h1> Welcome To Taste Buds</h1>
                 <p>Doloremque, itaque aperiam facilis rerum, commodi, temporibus sapiente ad mollitia laborum quam quisquam esse error unde. Tempora ex doloremque, labore, sunt repellat dolore, iste magni quos nihil ducimus libero ipsam.</p>
