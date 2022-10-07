@@ -2,6 +2,7 @@ import React from 'react'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { Dropdown } from 'react-bootstrap';
 
 export default function NavgigationBar() {
   return (
@@ -17,7 +18,16 @@ export default function NavgigationBar() {
 
             <Nav.Link className='ms-5' href="/cart"><i className="bi bi-basket2-fill"></i></Nav.Link>
             <Nav.Link href="/wishlist"><i className="bi bi-bag-heart-fill"></i></Nav.Link>
-            <Nav.Link href="/login"><i className="bi bi-person-fill"></i></Nav.Link>
+            <Dropdown>
+              <Dropdown.Toggle variant="" id="dropdown-basic" className="text-white">
+                <i className="bi bi-person-fill"></i>
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu className='bg-dark text-white'>
+                <Dropdown.Item href="#/action-1" className="text-warning">My Orders</Dropdown.Item>
+                <Dropdown.Item href="#/action-2" className="text-warning">Logout</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
 
           </Nav>
         </Navbar.Collapse>
