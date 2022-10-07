@@ -1,10 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Tabs, Tab, Container, Row, Col, Table } from 'react-bootstrap'
 import AdminSidebar from '../../components/AdminSidebar';
 import RestaurantForm from '../../components/RestaurantForm';
+import axios from 'axios';
+import API from '../../config/api';
+import { loadState } from '../../utils/session';
+ 
 
 export default function AdminRestaurant() {
     const [key, setKey] = useState('home');
+    const[restaurants, setrestaurants] = useState();
+    useEffect(() => {
+        // Get All Resturent
+        (async function () {
+            try {
+                let restaurants = await axios.get(API.DOMAIN + '/api/restaurants', {
+                    headers: {
+                        "x-Athorization": loadState()['token']
+                    }
+                });
+        
+                if (restaurants.status === 200) {
+                    setrestaurants(restaurants.data.data);
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        })();
+    }, []);
+
+    // const editRestaurants = async (rid) => {
+      
+    // }
+
+    // const AddFaveriteUrl = async (rid) => {
+      
+    // }
+
     return (
         <Container className="pt-5">
             <Row>
@@ -34,20 +66,28 @@ export default function AdminRestaurant() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td><img width="64px" src="/placeholder.png" alt="omik-res" /></td>
-                                            <td>Omik Restaurant</td>
-                                            <td>3.5</td>
-                                            <td><a href='/#'>Edit</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td><img width="64px" src="/placeholder.png" alt="omik-res" /></td>
-                                            <td>Elepass Restaurant</td>
-                                            <td>4.5</td>
-                                            <td><a href='/#'>Edit</a></td>
-                                        </tr>
+                                        {restaurants && restaurants.map((rst, i) => {
+                                            // let editUrl;
+                                            // let AddFaveriteUrl;
+
+                                            if (rst.Edit) {
+                                                return "";
+                                            } else {
+                                                return (  
+                                                 <tr key={rst._id}>
+                                                    <td>{i}</td>
+                                                    <td>{rst.display_image}</td>
+                                                    <td>{rst.name}</td>
+                                                    <td>{rst.rating}</td>
+                                                    <td>
+                                                        <a  href='/#'>Edit</a>
+                                                        <a  href='/#'>Add Favourite</a>
+                                                    </td>
+                                                </tr>
+                                    
+                                        )
+                                    }
+                                        })}
                                     </tbody>
                                 </Table>
                             </Tab>
