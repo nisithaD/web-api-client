@@ -5,6 +5,7 @@ import UserForm from '../../components/UserForm';
 import axios from 'axios';
 import API from '../../config/api';
 import { loadState } from '../../utils/session';
+import { toaster } from '../../utils/alert';
 
 
 
@@ -28,6 +29,7 @@ export default function AdminUsers() {
                 }
             } catch (e) {
                 console.log(e);
+                toaster('Something went wrong during loading data', 'error');
             }
         })();
     }, []);
@@ -45,10 +47,19 @@ export default function AdminUsers() {
                 });
                 users.splice(idx, 1);
                 // force rerender   
+                toaster('User has been removed', 'success')
                 forceUpdate();
             }
         } catch (e) {
             console.log(e);
+            if (e.response.data.errors) {
+                for (let idx in e.response.data.errors) {
+                    console.log(e.response.data.errors);
+                    toaster(e.response.data.errors[idx], 'error');
+                }
+            } else {
+                toaster('Something went wrong', 'error')
+            }
         }
     }
 

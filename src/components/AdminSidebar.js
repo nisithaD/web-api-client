@@ -14,9 +14,6 @@ export default function AdminSidebar() {
                 <Nav.Link href="/admin/restaurants">Restaurants</Nav.Link>
                 <Nav.Link href="/admin/orders" eventKey="link-1">Orders</Nav.Link>
                 <Nav.Link href="/admin/users" eventKey="link-2">Users</Nav.Link>
-                <Nav.Link eventKey="disabled" disabled>
-                    Logouts
-                </Nav.Link>
             </Nav>
         </NavWrapper>
     )

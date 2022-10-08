@@ -39,7 +39,6 @@ export default function HomePage() {
   const [restaurants, setRestaurants] = useState();
 
   useEffect(() => {
-    console.log(loadState()['token']);
     (async function () {
       try {
         let usrs = await axios.get(API.DOMAIN + '/api/restaurants', {
@@ -81,7 +80,7 @@ export default function HomePage() {
                   idx = Math.floor(Math.random() * (object.foods.length - 0) + 0);
                   console.log(object.foods[idx].name)
 
-                  let id=object.foods[idx].id;
+                  let id = object.foods[idx].id;
                   let name = object.foods[idx].name;
                   let description = object.foods[idx].description;
                   let food = object.foods[idx]._id;

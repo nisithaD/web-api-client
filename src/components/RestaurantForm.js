@@ -3,8 +3,8 @@ import { Form, Row, Col, Button } from 'react-bootstrap'
 import axios from 'axios';
 import API from '../config/api';
 import { loadState } from '../utils/session';
-import Notification from './Notification';
 import { useNavigate } from 'react-router-dom';
+import { toaster } from '../utils/alert';
 
 
 export default function RestaurantForm() {
@@ -13,8 +13,6 @@ export default function RestaurantForm() {
     const [rRating, setRating] = useState();
     const [rLatitude, setLatitude] = useState();
     const [rLongitude, setLongitude] = useState();
-    // const [rImage, setImage] = useState();
-    const [notification, setNotification] = useState(null);
     const navigate = useNavigate();
 
 
@@ -36,19 +34,25 @@ export default function RestaurantForm() {
                 }
             })
             if (response.status === 201) {
+                toaster("Restaurant Created", 'success');
                 navigate('/admin/restaurants/edit?id=' + response.data.data._id);
             }
         } catch (e) {
-            setNotification(e.response.data.message)
+            console.log(e);
+            if (e.response.data.errors) {
+                for (let idx in e.response.data.errors) {
+                    console.log(e.response.data.errors);
+                    toaster(e.response.data.errors[idx], 'error');
+                }
+            } else {
+                toaster('Something went wrong', 'error')
+            }
         }
 
     }
 
     return (
         <>
-            {notification !== null &&
-                <Notification message={notification} />
-            }
             <Form className='mt-3 mb-5'>
                 <h6 className='text-info mb-4 mt-5'>Basic Details</h6>
                 <Form.Group as={Row} className="mb-3" controlId="formplainname">

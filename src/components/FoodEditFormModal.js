@@ -2,7 +2,7 @@ import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useState } from "react";
 import axios from 'axios';
 import API from "../config/api";
-import Notification from "./Notification";
+import { toaster } from "../utils/alert";
 
 export default function FoodEditFormModal(props) {
 
@@ -12,7 +12,6 @@ export default function FoodEditFormModal(props) {
     const [description, setDescription] = useState();
     const [rating, setRating] = useState();
     const [price, setPrice] = useState();
-    const [notification, setNotification] = useState(null);
 
     const launchModal = async () => {
         try {
@@ -33,7 +32,7 @@ export default function FoodEditFormModal(props) {
             }
         } catch (e) {
             console.log(e)
-            setNotification(e.response.data.data.meessage);
+            toaster('Something went wrong when loading the data', 'error');
         }
     }
 
@@ -48,11 +47,18 @@ export default function FoodEditFormModal(props) {
             });
             if (res.status === 201) {
                 setShow(false);
+                toaster('Food Updated', 'success');
                 props.updateFd(res.data.data.foods);
             }
         } catch (e) {
             console.log(e);
-            setNotification(e.response.data.message)
+            if (e.response.data.errors) {
+                for (let idx in e.response.data.errors) {
+                    toaster(e.response.data.errors[idx], 'error');
+                }
+            } else {
+                toaster('Something went wrong', 'error')
+            }
         }
 
     }
@@ -73,9 +79,6 @@ export default function FoodEditFormModal(props) {
                     <Modal.Title>Update Food</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {notification !== null &&
-                        <Notification message={notification} />
-                    }
                     <Form.Group as={Row} className="mb-3" controlId="formplainname">
                         <Form.Label column sm="4">
                             Name

@@ -1,15 +1,15 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tabs, Tab, Container, Row, Col, Table } from 'react-bootstrap'
 import AdminSidebar from '../../components/AdminSidebar';
 import RestaurantForm from '../../components/RestaurantForm';
 import axios from 'axios';
 import API from '../../config/api';
 import { loadState } from '../../utils/session';
- 
+
 
 export default function AdminRestaurant() {
     const [key, setKey] = useState('home');
-    const[restaurants, setrestaurants] = useState();
+    const [restaurants, setrestaurants] = useState();
     useEffect(() => {
         // Get All Resturent
         (async function () {
@@ -19,7 +19,7 @@ export default function AdminRestaurant() {
                         "x-Athorization": loadState()['token']
                     }
                 });
-        
+
                 if (restaurants.status === 200) {
                     setrestaurants(restaurants.data.data);
                 }
@@ -30,11 +30,11 @@ export default function AdminRestaurant() {
     }, []);
 
     // const editRestaurants = async (rid) => {
-      
+
     // }
 
     // const AddFaveriteUrl = async (rid) => {
-      
+
     // }
 
     return (
@@ -73,20 +73,20 @@ export default function AdminRestaurant() {
                                             if (rst.Edit) {
                                                 return "";
                                             } else {
-                                                return (  
-                                                 <tr key={rst._id}>
-                                                    <td>{i}</td>
-                                                    <td>{rst.display_image}</td>
-                                                    <td>{rst.name}</td>
-                                                    <td>{rst.rating}</td>
-                                                    <td>
-                                                        <a  href='/#'>Edit</a>
-                                                        <a  href='/#'>Add Favourite</a>
-                                                    </td>
-                                                </tr>
-                                    
-                                        )
-                                    }
+                                                return (
+                                                    <tr key={rst._id}>
+                                                        <td>{i}</td>
+                                                        <td><img width="64px" src={rst.display_image} alt="name" /></td>
+                                                        <td>{rst.name}</td>
+                                                        <td>{rst.rating}</td>
+                                                        <td>
+                                                            <a href='/#'>Edit</a>
+                                                            <a href='/#'>Add Favourite</a>
+                                                        </td>
+                                                    </tr>
+
+                                                )
+                                            }
                                         })}
                                     </tbody>
                                 </Table>

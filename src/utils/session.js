@@ -17,3 +17,19 @@ export const saveState = state => {
         //ignoring write erros
     }
 };
+export const isLoggedIn = () => {
+    const visitor = loadState();
+    return (visitor && visitor.state === 'loggedin') ? true : false;
+}
+
+export const isAdmin = () => {
+    const visitor = loadState();
+    if (visitor && visitor.user) {
+        return visitor.user.isAdmin;
+    } else {
+        return false;
+    }
+}
+export const removeState = () => {
+    sessionStorage.removeItem('state');
+}

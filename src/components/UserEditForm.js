@@ -3,8 +3,8 @@ import { Form, Row, Col, Button } from 'react-bootstrap'
 import axios from 'axios';
 import API from '../config/api';
 import { loadState } from '../utils/session';
-import Notification from './Notification';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { toaster } from '../utils/alert';
 
 
 
@@ -16,7 +16,6 @@ export default function UserEditForm() {
     const [password, setPassword] = useState();
     const [isAdmin, setIsAdmin] = useState('false');
     const [confirmPassword, setConfirmPassword] = useState();
-    const [notification, setNotification] = useState(null);
     const navigate = useNavigate();
 
     const search = useLocation().search;
@@ -37,7 +36,7 @@ export default function UserEditForm() {
 
             } catch (e) {
                 console.log(e)
-                setNotification(e.response.data.data.message);
+                toaster('Something went wrong during loading data', 'error')
             }
         })();
     }, [uid]);
@@ -59,19 +58,25 @@ export default function UserEditForm() {
                 }
             })
             if (response.status === 201) { // type com
+                toaster('User updated successfully', 'success')
                 navigate('/admin/users/edit?id=' + response.data.data._id);
             }
         } catch (e) {
-            setNotification(e.response.data.message)
+            console.log(e)
+            if (e.response.data.errors) {
+                for (let idx in e.response.data.errors) {
+                    console.log(e.response.data.errors);
+                    toaster(e.response.data.errors[idx], 'error');
+                }
+            } else {
+                toaster('Something went wrong', 'error')
+            }
         }
 
     }
 
     return (
         <>
-            {notification !== null &&
-                <Notification message={notification} />
-            }
             <Form className='mt-3 mb-5'>
                 <h6 className='text-info mb-4 mt-5'>Basic Details</h6>
                 <Form.Group as={Row} className="mb-3" controlId="formplainname">

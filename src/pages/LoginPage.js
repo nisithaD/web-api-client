@@ -7,9 +7,10 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { saveState } from '../utils/session';
-import Notification from '../components/Notification';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Col, Row, Container } from 'react-bootstrap';
+import { toaster } from '../utils/alert';
+import jwtDecode from 'jwt-decode';
 
 const Center = styled.div`
     display:flex;
@@ -46,7 +47,6 @@ const Wrapper = styled.div`
 
 export default function LoginPage(props) {
 
-  const [notification, setNotification] = useState(null);
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
   const handleEmail = (e) => setEmail(e.target.value);
@@ -72,15 +72,24 @@ export default function LoginPage(props) {
             }
           });
           if (res.status === 200) {
-            saveState({
+            let data = jwtDecode(res.data.accessToken);
+            let user = await axios.get(API.DOMAIN + '/api/users/' + data._id);
+            let session = {
               "state": "loggedin",
               "token": res.data.accessToken,
               "expires": res.data.expires
-            })
+            };
+
+            if (user.status === 200) {
+              session['user'] = user.data.data;
+            }
+            saveState(session)
+            toaster('Logging Success', 'success');
             navigate(from);
           }
 
         } catch (e) {
+          toaster(e.message, 'warn');
           console.log(e)
         }
       }
@@ -93,19 +102,24 @@ export default function LoginPage(props) {
       password: pass
     }).then(async (response) => {
       if (response.status === 200) {
-        saveState({
+        let data = jwtDecode(response.data.accessToken);
+        let user = await axios.get(API.DOMAIN + '/api/users/' + data._id);
+        let session = {
           "state": "loggedin",
           "token": response.data.accessToken,
           "expires": response.data.expires
-        })
-        console.log('redirecting...');
-        await new Promise(r => setTimeout(r, 2000)); // sleeps otherwise it doesnt redirects
+        };
+        console.log(user)
+        if (user.status === 200) {
+          session['user'] = user.data.data;
+        }
+        saveState(session)
+        toaster('Logging Success', 'success');
         navigate(from);
       }
 
     }).catch((error) => {
-      setNotification(error.response.data.message)
-
+      toaster(error.response.data.message, 'warn');
     })
   }
 
@@ -120,9 +134,6 @@ export default function LoginPage(props) {
             </Col>
             <Col sm={7} className="d-flex align-items-center justify-content-center">
               <div>
-                {notification !== null &&
-                  <Notification message={notification} />
-                }
                 <Card style={{ width: '18rem' }}>
                   <Card.Body>
                     <Card.Title className="mb-4">Login</Card.Title>

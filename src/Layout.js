@@ -3,6 +3,7 @@ import NavigationBar from './components/NavigationBar'
 import Container from 'react-bootstrap/Container'
 import styled from 'styled-components'
 import img from './assets/hero-bg.jpg';
+import { ToastContainer } from 'react-toastify';
 
 const Header = styled.header`
   .navbar{
@@ -52,6 +53,7 @@ export default function Layout(props) {
       <Header>
         <NavigationBar />
       </Header>
+
       <Main>{props.children}</Main>
       <Footer>
         <Container>
@@ -61,6 +63,7 @@ export default function Layout(props) {
             <li className='list-item'><a href="/about">About</a></li>
           </ul>
         </Container>
+        <ToastContainer />
       </Footer>
     </>
   )

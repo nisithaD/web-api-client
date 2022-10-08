@@ -3,7 +3,7 @@ import { useState } from "react";
 import axios from 'axios';
 import API from "../config/api";
 import { useNavigate } from "react-router-dom";
-import Notification from "./Notification";
+import { toaster } from "../utils/alert";
 
 export default function FoodFormModal(props) {
 
@@ -14,7 +14,6 @@ export default function FoodFormModal(props) {
     const [description, setDescription] = useState();
     const [rating, setRating] = useState();
     const [price, setPrice] = useState();
-    const [notification, setNotification] = useState(null);
     const navigate = useNavigate();
 
 
@@ -29,11 +28,18 @@ export default function FoodFormModal(props) {
             if (res.status === 201) {
                 setShow(false);
                 props.handler(res.data.data);
+                toaster('Food added to restaurant', 'success');
                 navigate('/admin/restaurants/edit?id=' + props.restaurant);
             }
         } catch (e) {
             console.log(e);
-            setNotification(e.response.data.message)
+            if (e.response.data.errors) {
+                for (let idx in e.response.data.errors) {
+                    toaster(e.response.data.errors[idx], 'error');
+                }
+            } else {
+                toaster('Something went wrong', 'error')
+            }
         }
 
     }
@@ -54,9 +60,6 @@ export default function FoodFormModal(props) {
                     <Modal.Title>Add New Food</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {notification !== null &&
-                        <Notification message={notification} />
-                    }
                     <Form.Group as={Row} className="mb-3" controlId="formplainname">
                         <Form.Label column sm="4">
                             Name
