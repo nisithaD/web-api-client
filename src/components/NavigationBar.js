@@ -18,7 +18,7 @@ export default function NavgigationBar() {
         <Navbar.Collapse id="basic-navbar-nav" className='p-1'>
           <Nav className="ms-auto">
             <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/outlet">Outlets</Nav.Link>
+            <Nav.Link href="/outlets">Outlets</Nav.Link>
             <Nav.Link href="/about">About</Nav.Link>
 
             <Nav.Link className='ms-5' href="/cart"><i className="bi bi-basket2-fill"></i></Nav.Link>

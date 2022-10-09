@@ -13,6 +13,8 @@ import AdminRestaurant from './pages/admin/AdminRestaurant';
 import AdminRestaurantEdit from './pages/admin/AdminRestaurantEdit';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminEditUsers from './pages/admin/AdminEditUsers';
+import Outlets from './pages/Outlets';
+import ResturentsViews from './pages/RestuarentViws'
 
 function App() {
   console.log(isAdmin());
@@ -28,6 +30,8 @@ function App() {
             <Route exact path='/admin/restaurants/edit' element={isAdmin() ? (<AdminRestaurantEdit />) : (<Navigate to='/login' />)} />
             <Route exact path='/admin/users' element={isAdmin() ? (<AdminUsers />) : (<Navigate to='/login' />)} />
             <Route exact path='/admin/users/edit' element={isAdmin() ? (<AdminEditUsers />) : (<Navigate to='/login' />)} />
+           <Route exact path='/outlets' element={isLoggedIn() ? (<Outlets />) : (<Navigate to='/login' />)} />
+           <Route exact path='/outlets/resturentsViews' element={isLoggedIn() ? (<ResturentsViews />) : (<Navigate to='/login' />)} />
             <Route path='*' element={<NoMatch />} />
           </Routes>
         </Router>

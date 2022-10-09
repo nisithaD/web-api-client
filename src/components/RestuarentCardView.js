@@ -26,30 +26,33 @@ const Wrapper = styled.div`
     }
 
 `
-
-export default function FoodCardView(props) {
-    // console.log(props)
+export default function RestuarentCardView(props) {
     return (
         <Wrapper>
-            <Card className="mb-4">
-                <Card.Img   width="300px" height= "250px" variant="top" src= {props.display_image ||"/placeholder.png" }/>
+            <Card  className="mb-4" onClick={() =>ViewFood(props)} >
                
-                <Card.Body>
+                      
+                      <Card.Img width="300px" height= "250px" variant="top" src={props.display_image || "/placeholder.png"}   />
+              
+                
+                <Card.Body >
                     <Card.Title>{props.name}</Card.Title>
                     <Card.Text>
                         {props.description}
                     </Card.Text>
                     <RatingStars />
-                    <Button variant="warning" className="float-right" onClick={() =>addToCart(props)}>Add Favorite</Button>
-                    <Button variant="default" className="ms-2"> <i className="bi bi-heart"></i></Button>
+                    <Button variant="warning" className="float-right" a href='/outlets/ResturentsViews'>View Foods</Button>
+                    
+                    <Button variant="default" className="ms-2"> <i className="bi bi-heart"  onClick={() =>addToFavarite(props)}></i></Button>
                 </Card.Body>
             </Card>
         </Wrapper>
     )
-}
 
-//add to cart function
-async function addToCart(props) {
+
+}
+//palamkubura
+async function addToFavarite(props) {
     //jwt token decode
     let token = loadState()['token'];
     let user_id = decodeToken(token)._id;
@@ -72,3 +75,17 @@ async function addToCart(props) {
         console.log(e);
     }
 }
+
+//rumesh
+async function ViewFood(props) {
+    //jwt token decode
+  //  <a href='/outlets/restuarentFoods'></a>   
+ 
+  
+        let usrs = await axios.get(API.DOMAIN + '/outlets/restuarentFoods', {
+            headers: {
+                "x-Athorization": loadState()['token']
+            }
+        });
+      }
+   

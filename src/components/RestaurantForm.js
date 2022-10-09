@@ -4,7 +4,8 @@ import axios from 'axios';
 import API from '../config/api';
 import { loadState } from '../utils/session';
 import { useNavigate } from 'react-router-dom';
-import { toaster } from '../utils/alert';
+import { toaster } from '../utils/alert'; 
+import { upload } from '../utils/media';
 
 
 export default function RestaurantForm() {
@@ -13,16 +14,23 @@ export default function RestaurantForm() {
     const [rRating, setRating] = useState();
     const [rLatitude, setLatitude] = useState();
     const [rLongitude, setLongitude] = useState();
+    const [rImage,setImage] = useState();
     const navigate = useNavigate();
 
 
     const createRestaurant = async () => {
         try {
+          
+            let url = await upload(rImage);
+            let img_url = "";
+            if(url){
+                img_url = url;
+            }
             const response = await axios.post(API.DOMAIN + '/api/restaurants', {
                 name: rName,
                 address: rAddress,
                 rating: rRating,
-                display_image: null,
+                display_image: img_url ,
                 location: {
                     lat: rLatitude,
                     lng: rLongitude
@@ -85,8 +93,7 @@ export default function RestaurantForm() {
                         Display Image
                     </Form.Label>
                     <Col sm="10">
-                        {/* <Form.Control type="file" placeholder="" onChange={(e) => { setImage(e.target.files[0]) }} /> */}
-                        <Form.Control type="file" placeholder="" />
+                        <Form.Control type="file" placeholder="" onChange={(e) => { setImage(e.target.files[0]) }} />
                     </Col>
                 </Form.Group>
 

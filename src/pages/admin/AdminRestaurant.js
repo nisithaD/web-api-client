@@ -33,9 +33,7 @@ export default function AdminRestaurant() {
 
     // }
 
-    // const AddFaveriteUrl = async (rid) => {
-
-    // }
+  
 
     return (
         <Container className="pt-5">
@@ -68,8 +66,7 @@ export default function AdminRestaurant() {
                                     <tbody>
                                         {restaurants && restaurants.map((rst, i) => {
                                             // let editUrl;
-                                            // let AddFaveriteUrl;
-
+                                            
                                             if (rst.Edit) {
                                                 return "";
                                             } else {
@@ -81,7 +78,7 @@ export default function AdminRestaurant() {
                                                         <td>{rst.rating}</td>
                                                         <td>
                                                             <a href='/#'>Edit</a>
-                                                            <a href='/#'>Add Favourite</a>
+                                                           
                                                         </td>
                                                     </tr>
 
