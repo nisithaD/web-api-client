@@ -1,7 +1,7 @@
 
 import Container from 'react-bootstrap/Container'
 import styled from 'styled-components'
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Tabs,Tab } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import API from '../config/api';
@@ -9,6 +9,7 @@ import { loadState } from '../utils/session';
 import RestuarentCardView from '../components/RestuarentCardView';
 
 const Wrapper = styled.div`
+padding-top: 50px;
 h1{
   font-size: 70px;
   font-weight: bold;
@@ -16,6 +17,19 @@ h1{
 h3{
   font-weight:bold;
   text-transform: uppercase;
+}
+.nav-tabs{
+  display:flex;
+  justify-content:center;
+  border: none;
+}
+.nav-link{
+  text-transform: uppercase;
+  &.active{
+    color: orange;
+    border:none;
+    border-bottom: 2px solid orange;
+  }
 }
 `
 
@@ -50,9 +64,15 @@ export default function Outlets() {
       })();
     }, []);
     return (
+
       <Wrapper>
-       
-        <Section>
+    <Tabs
+          defaultActiveKey="home"
+          id="uncontrolled-tab-example"
+          className="mb-3"
+        >
+          <Tab eventKey="home" title="All">
+          <Section>
           <Container>
             <P100>
               <h3 className='text-center'>RestaurantS</h3>
@@ -76,6 +96,12 @@ export default function Outlets() {
             </P100>
           </Container>
         </Section>
+          </Tab>
+          <Tab eventKey="profile" title="Favourites">
+           <></>
+          </Tab>
+    </Tabs>
+       
       </Wrapper >
     )
   }
