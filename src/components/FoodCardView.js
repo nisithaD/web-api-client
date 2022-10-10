@@ -55,10 +55,10 @@ export default function FoodCardView(props) {
                 }
             })
             if (response.status === 200) {
-                toaster('Added to the cart', 'success');
+                toaster(response.data.message, 'success');
             }
         } catch (e) {
-            toaster('Something went wrong!', 'error');
+            toaster(e.response.data.message, 'error');
         }
     }
     return (
