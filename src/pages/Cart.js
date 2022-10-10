@@ -13,6 +13,7 @@ import {
 } from "mdb-react-ui-kit";
 
 export default function Cart() {
+    //get cart items
     return (
         <section className="h-100" style={{ backgroundColor: "#eee" }}>
             <MDBContainer className="py-5 h-100">

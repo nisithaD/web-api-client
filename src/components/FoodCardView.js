@@ -25,13 +25,21 @@ const Wrapper = styled.div`
             }
         }
     }
+    
+    #cart{
+        color: #fff;
+        font-size: 17px;
+        &:hover{
+            color:green;  
+        }
+    }
 
 `
 
 export default function FoodCardView(props) {
     // console.log(props)
     let addToCart = async (props) => {
-        //decode token
+
         let token = loadState()['token'];
         let user_id = decodeToken(token)._id;
         try {
@@ -66,7 +74,7 @@ export default function FoodCardView(props) {
                     <RatingStars />
                     <Button variant="warning" className="float-right">Add Favorite</Button>
                     <Button variant="default" className="ms-2"> <i className="bi bi-heart"></i></Button>
-                    <Button variant="default" className="ms-2" onClick={() =>addToCart(props)}> <i className="bi bi-cart"></i></Button>
+                    <Button variant="default" id="cart" className="ms-2" onClick={() =>addToCart(props)}> <i className="bi-cart text-white"></i></Button>
                 </Card.Body>
             </Card>
         </Wrapper>
