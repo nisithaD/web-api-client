@@ -81,13 +81,14 @@ export default function HomePage() {
                   console.log(object.foods[idx].name)
 
                   let id = object.foods[idx].id;
+                  let display_image = object.foods[idx].display_image;
                   let name = object.foods[idx].name;
                   let description = object.foods[idx].description;
                   let food = object.foods[idx]._id;
                   let restaurant = object._id;
                   let price = object.foods[idx].price;
 
-                  return <Col md={3}> <FoodCardView id={id} name={name} description={description} food={food} restaurant={restaurant} price={price} /> </Col>
+                  return <Col md={3}> <FoodCardView id={id} display_image={display_image} name={name} description={description} food={food} restaurant={restaurant} price={price} /> </Col>
                 } else {
                   return "";
                 }

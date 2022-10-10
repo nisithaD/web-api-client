@@ -7,6 +7,8 @@ import axios from 'axios';
 import { useEffect,useState } from 'react';
 import Places from '../components/Places'
 import styled from 'styled-components';
+import FoodCardView from '../components/FoodCardView';
+import img from '../assets/hero-bg.jpg';
 
 const MapWrapper = styled.div`
     width: 100%;
@@ -16,8 +18,36 @@ const MapWrapper = styled.div`
         height: 100%
     }
 `
+const Wrapper = styled.div`
+h1{
+    font-size: 70px;
+    font-weight: bold;
+  }
+  h3{
+    font-weight:bold;
+    text-transform: uppercase;
+  }
+  `
+  const SectionWelcome = styled.div`
+    padding-top: 70px;
+    padding-bottom: 70px;
+    background-image: url(${img}) ;
+    background-position: 100% -155px;
+    background-repeat: no-repeat;
+    color: #fff;
+     
+  `
+  const Section = styled.div`
+  
+  `
+  const P100 = styled.div`
+    padding-top: 100px;
+    padding-bottom:100px;
+  `
+ 
 
 export default function RestaurantsView() {
+    const [restaurants, setRestaurants] = useState();
 
     const search = useLocation().search;
     var uid = new URLSearchParams(search).get('id');
@@ -53,55 +83,45 @@ export default function RestaurantsView() {
       <Row className="mt-5">
         <Col sm={3}>
             <Card >
-                <Card.Img variant="top" src="/placeholder.png" />
-                <Card.Body>
-                    <Card.Title>Card Title</Card.Title>
-                    <Card.Text>
-                    Some quick example text to build on the card title and make up the
-                    bulk of the card's content.
-                    </Card.Text>
-                    <Button variant="primary">Go somewhere</Button>
-                </Card.Body>
+            <Card.Body>
+
+            <Wrapper>
+      <Section>
+        <Container>
+          <P100>
+            <h3 className='text-center'>New Tastes</h3>
+            <Row className="mt-5">
+              {restaurants && restaurants.map((uid, i) => {
+                let idx;
+                if (uid.foods.length > 0) {
+                  idx = Math.floor(Math.random() * (uid.foods.length - 0) + 0);
+                  console.log(uid.foods[idx].name)
+
+                  let id = uid.foods[idx].id;
+                  let display_image = uid.foods[idx].display_image;
+                  let name = uid.foods[idx].name;
+                  let description = uid.foods[idx].description;
+                  let food = uid.foods[idx]._id;
+                  let restaurant = uid._id;
+                  let price = uid.foods[idx].price;
+
+                  return <Col md={3}> <FoodCardView id={id} display_image={display_image} name={name} description={description} food={food} restaurant={restaurant} price={price} /> </Col>
+                } else {
+                  return "";
+                }
+
+              })}
+            </Row>
+          </P100>
+        </Container>
+      </Section>
+    </Wrapper >
+
+            </Card.Body>
             </Card>
         </Col>
         <Col sm={3}>
-        <Card >
-                <Card.Img variant="top" src="/placeholder.png" />
-                <Card.Body>
-                    <Card.Title>Card Title</Card.Title>
-                    <Card.Text>
-                    Some quick example text to build on the card title and make up the
-                    bulk of the card's content.
-                    </Card.Text>
-                    <Button variant="primary">Go somewhere</Button>
-                </Card.Body>
-            </Card>
-        </Col>
-        <Col sm={3}>
-        <Card >
-                <Card.Img variant="top" src="/placeholder.png" />
-                <Card.Body>
-                    <Card.Title>Card Title</Card.Title>
-                    <Card.Text>
-                    Some quick example text to build on the card title and make up the
-                    bulk of the card's content.
-                    </Card.Text>
-                    <Button variant="primary">Go somewhere</Button>
-                </Card.Body>
-            </Card>
-        </Col>
-        <Col sm={3}>
-        <Card >
-                <Card.Img variant="top" src="/placeholder.png" />
-                <Card.Body>
-                    <Card.Title>Card Title</Card.Title>
-                    <Card.Text>
-                    Some quick example text to build on the card title and make up the
-                    bulk of the card's content.
-                    </Card.Text>
-                    <Button variant="primary">Go somewhere</Button>
-                </Card.Body>
-            </Card>
+  
         </Col>
       </Row>
       <Row className="mt-5">
