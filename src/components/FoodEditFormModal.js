@@ -3,6 +3,26 @@ import { useState } from "react";
 import axios from 'axios';
 import API from "../config/api";
 import { toaster } from "../utils/alert";
+import styled from 'styled-components';
+import { upload } from '../utils/media';
+import { loadState } from "../utils/session";
+
+const ImgWrapper = styled.div`
+    position: relative;
+    width:fit-content;
+    i{
+        position:absolute;
+        right: -7px;
+        top: -11px;
+        &:hover{
+            cursor:pointer;
+        }
+    }
+    img{
+        border-radius: 10px;
+        border: 2px solid #ccc;
+    }
+`
 
 export default function FoodEditFormModal(props) {
 
@@ -10,6 +30,8 @@ export default function FoodEditFormModal(props) {
     const handleClose = () => setShow(false);
     const [name, setName] = useState();
     const [description, setDescription] = useState();
+    const [img, setImg] = useState();
+    const [imgTemp, setImageTemp] = useState();
     const [rating, setRating] = useState();
     const [price, setPrice] = useState();
 
@@ -28,6 +50,7 @@ export default function FoodEditFormModal(props) {
                 setPrice(food.price);
                 setDescription(food.description);
                 setRating(food.rating);
+                setImg(food.display_image);
 
             }
         } catch (e) {
@@ -39,11 +62,22 @@ export default function FoodEditFormModal(props) {
 
     const updateToForm = async () => {
         try {
+            let url = await upload(imgTemp);
+            let img_url = "";
+            if (url) {
+                img_url = url;
+                setImg(url);
+            }
             let res = await axios.put(API.DOMAIN + '/api/restaurants/' + props.restaurant + '/foods/' + props.food, {
                 name: name,
                 price: price,
                 rating: rating,
-                description: description
+                description: description,
+                display_image: img_url !== "" ? img_url : img,
+            }, {
+                headers: {
+                    "x-Authorization": loadState()['token']
+                }
             });
             if (res.status === 201) {
                 setShow(false);
@@ -117,7 +151,17 @@ export default function FoodEditFormModal(props) {
                             Display Image
                         </Form.Label>
                         <Col sm="8">
-                            <Form.Control type="file" placeholder="Password" />
+                            {
+                                img && typeof img === 'string' ?
+                                    (<ImgWrapper>
+                                        <i className="bi bi-x-circle-fill text-danger" onClick={(e) => { setImg("") }}></i>
+                                        <img width="150" src={img} alt="Restaurant" />
+                                        < Form.Control type="hidden" placeholder="" value={img} />
+                                    </ImgWrapper>)
+                                    :
+                                    (< Form.Control type="file" placeholder="" onChange={(e) => { setImageTemp(e.target.files[0]) }} />)
+                            }
+
                         </Col>
                     </Form.Group>
                 </Modal.Body>

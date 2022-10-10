@@ -32,15 +32,15 @@ export default function FoodCardView(props) {
     return (
         <Wrapper>
             <Card className="mb-4">
-                <Card.Img   width="300px" height= "250px" variant="top" src= {props.display_image ||"/placeholder.png" }/>
-               
+                <Card.Img width="300px" height="250px" variant="top" src={props.image || "/placeholder.png"} />
+
                 <Card.Body>
                     <Card.Title>{props.name}</Card.Title>
                     <Card.Text>
                         {props.description}
                     </Card.Text>
                     <RatingStars />
-                    <Button variant="warning" className="float-right" onClick={() =>addToCart(props)}>Add Favorite</Button>
+                    <Button variant="warning" className="float-right" onClick={() => addToCart(props)}>Add Favorite</Button>
                     <Button variant="default" className="ms-2"> <i className="bi bi-heart"></i></Button>
                 </Card.Body>
             </Card>
@@ -54,7 +54,7 @@ async function addToCart(props) {
     let token = loadState()['token'];
     let user_id = decodeToken(token)._id;
     try {
-        let res = await axios.post(API.DOMAIN + '/api/users/'+user_id+'/cart', {
+        let res = await axios.post(API.DOMAIN + '/api/users/' + user_id + '/cart', {
             "outlet": props.restaurant_id,
             "food": props.id,
             "quantity": 1,
