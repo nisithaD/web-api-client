@@ -7,9 +7,6 @@ import { isLoggedIn, isAdmin, removeState } from '../utils/session';
 
 
 export default function NavgigationBar() {
-
-
-
   return (
     <Navbar bg="light" expand="lg">
       <Container>

@@ -6,6 +6,7 @@ import API from '../config/api';
 import axios from 'axios';
 import { loadState } from '../utils/session';
 import { decodeToken } from "react-jwt";
+import {toaster} from "../utils/alert";
 
 const Wrapper = styled.div`
     .card-body{
@@ -29,6 +30,29 @@ const Wrapper = styled.div`
 
 export default function FoodCardView(props) {
     // console.log(props)
+    let addToCart = async (props) => {
+        //decode token
+        let token = loadState()['token'];
+        let user_id = decodeToken(token)._id;
+        try {
+            const response = await axios.post(API.DOMAIN + '/api/users/'+user_id+'/cart', {
+                food: props,
+                qty: 1,
+                price: props.price,
+                outlet: props.restaurant,
+                lineTotal: props.price
+            }, {
+                headers: {
+                    "x-Authorization": loadState()['token']
+                }
+            })
+            if (response.status === 200) {
+                toaster('Added to the cart', 'success');
+            }
+        } catch (e) {
+            toaster('Something went wrong!', 'error');
+        }
+    }
     return (
         <Wrapper>
             <Card className="mb-4">
@@ -40,35 +64,13 @@ export default function FoodCardView(props) {
                         {props.description}
                     </Card.Text>
                     <RatingStars />
-                    <Button variant="warning" className="float-right" onClick={() =>addToCart(props)}>Add Favorite</Button>
+                    <Button variant="warning" className="float-right">Add Favorite</Button>
                     <Button variant="default" className="ms-2"> <i className="bi bi-heart"></i></Button>
+                    <Button variant="default" className="ms-2" onClick={() =>addToCart(props)}> <i className="bi bi-cart"></i></Button>
                 </Card.Body>
             </Card>
         </Wrapper>
     )
 }
 
-//add to cart function
-async function addToCart(props) {
-    //jwt token decode
-    let token = loadState()['token'];
-    let user_id = decodeToken(token)._id;
-    try {
-        let res = await axios.post(API.DOMAIN + '/api/users/'+user_id+'/cart', {
-            "outlet": props.restaurant_id,
-            "food": props.id,
-            "quantity": 1,
-            "price": props.price,
-            "lineTotal": props.price
-        }, {
-            headers: {
-                "x-Authorization": loadState()['token']
-            }
-        });
-        if (res.status === 200) {
-            alert("Added to cart");
-        }
-    } catch (e) {
-        console.log(e);
-    }
-}
+

@@ -14,6 +14,7 @@ import AdminRestaurantEdit from './pages/admin/AdminRestaurantEdit';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminEditUsers from './pages/admin/AdminEditUsers';
 import Outlets from './pages/Outlets';
+import Cart from './pages/Cart';
 // import ResturentsViews from './pages/RestuarentViws'
 import RestaurantsView from './pages/RestaurantsView';
 
@@ -33,6 +34,7 @@ function App() {
             <Route exact path='/admin/users/edit' element={isAdmin() ? (<AdminEditUsers />) : (<Navigate to='/login' />)} />
            <Route exact path='/outlets' element={isLoggedIn() ? (<Outlets />) : (<Navigate to='/login' />)} />
            <Route exact path='/outlets/view' element={isLoggedIn() ? (<RestaurantsView />) : (<Navigate to='/login' />)} />
+           <Route exact path='/cart' element={isLoggedIn() ? (<Cart />) : (<Navigate to='/login' />)} />
             <Route path='*' element={<NoMatch />} />
           </Routes>
         </Router>
