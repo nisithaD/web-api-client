@@ -6,7 +6,7 @@ export default function FoodCard(props) {
     return (
         <>
             <Card >
-                <Card.Img variant="top" src="/placeholder.png" />
+                <Card.Img variant="top" src={props.image || "/placeholder.png"} />
                 <Card.Body>
                     <Card.Title>{props.name}</Card.Title>
                     <Card.Text>

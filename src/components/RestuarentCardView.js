@@ -1,7 +1,7 @@
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
-import RatingStars from './RatingStars';
+import RestaurantRating from './RestaurantRating';
 import API from '../config/api';
 import axios from 'axios';
 import { loadState } from '../utils/session';
@@ -29,21 +29,21 @@ const Wrapper = styled.div`
 export default function RestuarentCardView(props) {
     return (
         <Wrapper>
-            <Card  className="mb-4" onClick={() =>ViewFood(props)} >
-               
-                      
-                      <Card.Img width="300px" height= "250px" variant="top" src={props.display_image || "/placeholder.png"}   />
-              
-                
+            <Card className="mb-4" onClick={() => ViewFood(props)} >
+
+
+                <Card.Img width="300px" height="250px" variant="top" src={props.display_image || "/placeholder.png"} />
+
+
                 <Card.Body >
                     <Card.Title>{props.name}</Card.Title>
                     <Card.Text>
                         {props.description}
                     </Card.Text>
-                    <RatingStars />
+                    <RestaurantRating restaurant={props} />
                     <Button variant="warning" className="float-right" a href='/outlets/ResturentsViews'>View Foods</Button>
-                    
-                    <Button variant="default" className="ms-2"> <i className="bi bi-heart"  onClick={() =>addToFavarite(props)}></i></Button>
+
+                    <Button variant="default" className="ms-2"> <i className="bi bi-heart" onClick={() => addToFavarite(props)}></i></Button>
                 </Card.Body>
             </Card>
         </Wrapper>
@@ -57,7 +57,7 @@ async function addToFavarite(props) {
     let token = loadState()['token'];
     let user_id = decodeToken(token)._id;
     try {
-        let res = await axios.post(API.DOMAIN + '/api/users/'+user_id+'/cart', {
+        let res = await axios.post(API.DOMAIN + '/api/users/' + user_id + '/cart', {
             "outlet": props.restaurant_id,
             "food": props.id,
             "quantity": 1,
@@ -79,13 +79,13 @@ async function addToFavarite(props) {
 //rumesh
 async function ViewFood(props) {
     //jwt token decode
-  //  <a href='/outlets/restuarentFoods'></a>   
- 
-  
-        let usrs = await axios.get(API.DOMAIN + '/outlets/restuarentFoods', {
-            headers: {
-                "x-Athorization": loadState()['token']
-            }
-        });
-      }
-   
+    //  <a href='/outlets/restuarentFoods'></a>   
+
+
+    let usrs = await axios.get(API.DOMAIN + '/outlets/restuarentFoods', {
+        headers: {
+            "x-Athorization": loadState()['token']
+        }
+    });
+}
+

@@ -1,7 +1,7 @@
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
-import RatingStars from './RatingStars';
+import FoodRating from './FoodRating';
 import API from '../config/api';
 import axios from 'axios';
 import { loadState } from '../utils/session';
@@ -71,14 +71,12 @@ export default function FoodCardView(props) {
                     <Card.Text>
                         {props.description}
                     </Card.Text>
-                    <RatingStars />
-                    <Button variant="warning" className="float-right">Add Favorite</Button>
+                    <FoodRating food={props.item} restaurant={props.parent} />
+                    <Button variant="warning" className="float-right" onClick={() => addToCart(props)}>Add Cart</Button>
                     <Button variant="default" className="ms-2"> <i className="bi bi-heart"></i></Button>
-                    <Button variant="default" id="cart" className="ms-2" onClick={() =>addToCart(props)}> <i className="bi-cart text-white"></i></Button>
                 </Card.Body>
             </Card>
         </Wrapper>
     )
 }
-
 

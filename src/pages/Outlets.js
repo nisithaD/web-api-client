@@ -1,7 +1,7 @@
 
 import Container from 'react-bootstrap/Container'
 import styled from 'styled-components'
-import { Row, Col, Tabs,Tab } from 'react-bootstrap';
+import { Row, Col, Tabs, Tab } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import API from '../config/api';
@@ -44,64 +44,64 @@ const P100 = styled.div`
 export default function Outlets() {
 
 
-    const [restaurants, setRestaurants] = useState();
+  const [restaurants, setRestaurants] = useState();
 
-    useEffect(() => {
-      (async function () {
-        try {
-          let usrs = await axios.get(API.DOMAIN + '/api/restaurants', {
-            headers: {
-              "x-Authorization": loadState()['token']
-            }
-          });
-          if (usrs.status === 200) {
-            setRestaurants(usrs.data.data);
-  
+  useEffect(() => {
+    (async function () {
+      try {
+        let usrs = await axios.get(API.DOMAIN + '/api/restaurants', {
+          headers: {
+            "x-Authorization": loadState()['token']
           }
-        } catch (e) {
-          console.log(e);
-        }
-      })();
-    }, []);
-    return (
+        });
+        if (usrs.status === 200) {
+          setRestaurants(usrs.data.data);
 
-      <Wrapper>
-    <Tabs
-          defaultActiveKey="home"
-          id="uncontrolled-tab-example"
-          className="mb-3"
-        >
-          <Tab eventKey="home" title="All">
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+  }, []);
+  return (
+
+    <Wrapper>
+      <Tabs
+        defaultActiveKey="home"
+        id="uncontrolled-tab-example"
+        className="mb-3"
+      >
+        <Tab eventKey="home" title="All">
           <Section>
-          <Container>
-            <P100>
-              <h3 className='text-center'>RestaurantS</h3>
-              <Row className="mt-5">
-                {restaurants && restaurants.map((res, i) => {
-                 
-                  if (restaurants.length > 0) {
-                    
-                    let id = res.id;
-                    let display_image = res.display_image;
-                    let name = res.name;
-                    let address = res.address;
-                    let rating = res.rating;               
-                    return <Col md={3}> <RestuarentCardView id={id} display_image={display_image} name={name} address={address} rating={rating}  /> </Col>
-                  } else {
-                    return "";
-                  }
-  
-                })}
-              </Row>
-            </P100>
-          </Container>
-        </Section>
-          </Tab>
-          <Tab eventKey="profile" title="Favourites">
-           <></>
-          </Tab>
-    </Tabs>
-       
-      </Wrapper >
-    )
-  }
+            <Container>
+              <P100>
+                <h3 className='text-center'>RestaurantS</h3>
+                <Row className="mt-5">
+                  {restaurants && restaurants.map((res, i) => {
+
+                    if (restaurants.length > 0) {
+
+                      let id = res._id;
+                      let display_image = res.display_image;
+                      let name = res.name;
+                      let address = res.address;
+                      let rating = res.rating;
+                      return <Col md={3}> <RestuarentCardView id={id} display_image={display_image} name={name} address={address} rating={rating} /> </Col>
+                    } else {
+                      return "";
+                    }
+
+                  })}
+                </Row>
+              </P100>
+            </Container>
+          </Section>
+        </Tab>
+        <Tab eventKey="profile" title="Favourites">
+          <></>
+        </Tab>
+      </Tabs>
+
+    </Wrapper >
+  )
+}

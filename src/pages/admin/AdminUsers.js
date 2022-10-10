@@ -20,7 +20,7 @@ export default function AdminUsers() {
             try {
                 let usrs = await axios.get(API.DOMAIN + '/api/users', {
                     headers: {
-                        "x-Athorization": loadState()['token']
+                        "x-Authorization": loadState()['token']
                     }
                 });
                 if (usrs.status === 200) {
@@ -108,11 +108,11 @@ export default function AdminUsers() {
                                                         <td>{usr.address}</td>
                                                         <td>{usr.isAdmin ? 'true' : 'false'}</td>
                                                         <td>
-                                                            <a href={editUrl}>Edit</a>&nbsp;
-                                                            <a href='/#' onClick={(e) => {
+                                                            <a className='text-decoration-none' href={editUrl}><i className="bi bi-pencil-square"></i></a>&nbsp;
+                                                            <a className="text-decoration-none" href='/#' onClick={(e) => {
                                                                 e.preventDefault();
                                                                 deleteUser(usr._id);
-                                                            }}>Delete</a>
+                                                            }}><i className="bi bi-trash3-fill text-danger"></i></a>
                                                         </td>
                                                     </tr>
                                                 )
