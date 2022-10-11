@@ -57,12 +57,12 @@ async function addToFavarite(props) {
     let token = loadState()['token'];
     let user_id = decodeToken(token)._id;
     try {
-        let res = await axios.post(API.DOMAIN + '/api/users/' + user_id + '/cart', {
+        let res = await axios.post(API.DOMAIN + '/api/users/'+user_id+'/favourites', {
             "outlet": props.restaurant_id,
-            "food": props.id,
-            "quantity": 1,
-            "price": props.price,
-            "lineTotal": props.price
+            //"food": props.id,
+            //"quantity": 1,
+            //"price": props.price,
+            //"lineTotal": props.price
         }, {
             headers: {
                 "x-Authorization": loadState()['token']

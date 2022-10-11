@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useEffect,useState } from 'react';
 import Places from '../components/Places'
 import styled from 'styled-components';
+import RatingStars from '../components/RatingStars';
 import FoodCardView from '../components/FoodCardView';
 import img from '../assets/hero-bg.jpg';
 
@@ -53,6 +54,9 @@ export default function RestaurantsView() {
     var uid = new URLSearchParams(search).get('id');
     const [name, setName] = useState();
     const [address, setAddress] = useState();
+    const [lat,setLat] = useState();
+    const [lng, setLng]= useState();
+    console.log({lat,lng});
     useEffect(()=>{
         (async function(){
             try{
@@ -61,6 +65,8 @@ export default function RestaurantsView() {
                 if(rest.status === 200){
                    setName(rest.data.data.name);
                    setAddress(rest.data.data.address);
+                   setLat(rest.data.data.location.lat);
+                   setLng(rest.data.data.location.lng);
                 }else{
                     console.log(rest);
                 }
@@ -77,7 +83,7 @@ export default function RestaurantsView() {
           <Col sm={9}>
               <h2>{name}</h2>
                <p>{address}</p> 
-               <p>Rating: 3.4</p> 
+               <RatingStars/>
           </Col>
       </Row>
       <Row className="mt-5">
@@ -127,7 +133,7 @@ export default function RestaurantsView() {
       <Row className="mt-5">
         <Col sm={12}>
             <MapWrapper>
-                <Places/>
+                <Places lat={lat} lng={lng}/>
                 </MapWrapper>
         </Col>
       </Row>

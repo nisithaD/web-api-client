@@ -7,6 +7,7 @@ import axios from 'axios';
 import API from '../config/api';
 import { loadState } from '../utils/session';
 import RestuarentCardView from '../components/RestuarentCardView';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Wrapper = styled.div`
 padding-top: 50px;
