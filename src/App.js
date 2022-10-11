@@ -17,14 +17,13 @@ import Outlets from './pages/Outlets';
 import Cart from './pages/Cart';
 import RestaurantsView from './pages/RestaurantsView';
 import Profile from './pages/Profile';
-import { toaster } from './utils/alert';
 
 
 function App() {
   return (
     <>
-      <Layout>
-        <Router>
+      <Router>
+        <Layout>
           <Routes>
             {/* <Route exact path='/' element={isLoggedIn() ? (<HomePage />) : (<Navigate to='/login' />)} /> */}
             <Route exact path='/' element={AuthCheck(isLoggedIn, (<HomePage />), (<Navigate to='/login' />))} />
@@ -40,8 +39,8 @@ function App() {
             <Route exact path='/my-profile' element={AuthCheck(isLoggedIn, (<Profile />), (<Navigate to='/login' />))} />
             <Route path='*' element={<NoMatch />} />
           </Routes>
-        </Router>
-      </Layout>
+        </Layout>
+      </Router>
     </>
   );
 }

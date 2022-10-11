@@ -4,9 +4,11 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Dropdown } from 'react-bootstrap';
 import { isLoggedIn, isAdmin, removeState } from '../utils/session';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function NavgigationBar() {
+  const navigate = useNavigate();
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -30,7 +32,7 @@ export default function NavgigationBar() {
                 {isLoggedIn() ?
                   (<>
                     <Dropdown.Item href="/my-profile" className="text-warning">My Profile</Dropdown.Item>
-                    <Dropdown.Item href="#" onClick={(e) => { e.preventDefault(); removeState() }} className="text-warning">Logout</Dropdown.Item>
+                    <Dropdown.Item href="#" onClick={(e) => { e.preventDefault(); removeState(); navigate('/login'); }} className="text-warning">Logout</Dropdown.Item>
                   </>) :
                   (<Dropdown.Item href="/login" className="text-warning">Login</Dropdown.Item>)}
                 {isAdmin() && (<Dropdown.Item href="/admin/dashboard" className="text-warning border-top border-secondary">Admin Dashboard</Dropdown.Item>)}
