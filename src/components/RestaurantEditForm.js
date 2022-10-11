@@ -8,6 +8,25 @@ import { useLocation } from "react-router-dom";
 import FoodFormModal from './FoodFormModal';
 import FoodCard from './FoodCard';
 import { toaster } from '../utils/alert';
+import styled from 'styled-components';
+import { upload } from '../utils/media';
+
+const ImgWrapper = styled.div`
+    position: relative;
+    width:fit-content;
+    i{
+        position:absolute;
+        right: -7px;
+        top: -11px;
+        &:hover{
+            cursor:pointer;
+        }
+    }
+    img{
+        border-radius: 10px;
+        border: 2px solid #ccc;
+    }
+`
 
 
 export default function RestaurantForm() {
@@ -16,7 +35,8 @@ export default function RestaurantForm() {
     const [rRating, setRating] = useState();
     const [rLatitude, setLatitude] = useState();
     const [rLongitude, setLongitude] = useState();
-    // const [rImage, setImage] = useState();
+    const [rImage, setImage] = useState();
+    const [rImageTemp, setImageTemp] = useState();
     const navigate = useNavigate();
     const [foods, setFoods] = useState();
 
@@ -44,6 +64,7 @@ export default function RestaurantForm() {
                     setLatitude(restaurant.location.lat)
                     setLongitude(restaurant.location.lng)
                     setFoods(restaurant.foods);
+                    setImage(restaurant.display_image);
                 }
             } catch (e) {
                 toaster("Something went wrong when loading data", 'error');
@@ -54,17 +75,23 @@ export default function RestaurantForm() {
 
     const updateRestaurant = async () => {
         try {
-            const response = await axios.put(API.DOMAIN + '/api/restaurants/' + resId, {
+            let url = await upload(rImageTemp);
+            let img_url = "";
+            if (url) {
+                img_url = url;
+                setImage(url);
+            }
+            let args = {
                 name: rName,
                 address: rAddress,
                 rating: rRating,
-                display_image: null,
+                display_image: img_url !== "" ? img_url : rImage,
                 location: {
                     lat: rLatitude,
                     lng: rLongitude
                 }
-
-            }, {
+            }
+            const response = await axios.put(API.DOMAIN + '/api/restaurants/' + resId, args, {
                 headers: {
                     "x-Authorization": loadState()['token']
                 }
@@ -120,8 +147,17 @@ export default function RestaurantForm() {
                         Display Image
                     </Form.Label>
                     <Col sm="10">
-                        {/* <Form.Control type="file" placeholder="" onChange={(e) => { setImage(e.target.files[0]) }} /> */}
-                        <Form.Control type="file" placeholder="" />
+                        {
+                            rImage && typeof rImage === 'string' ?
+                                (<ImgWrapper>
+                                    <i className="bi bi-x-circle-fill text-danger" onClick={(e) => { setImage("") }}></i>
+                                    <img width="150" src={rImage} alt="Restaurant" />
+                                    < Form.Control type="hidden" placeholder="" value={rImage} />
+                                </ImgWrapper>)
+                                :
+                                (< Form.Control type="file" placeholder="" onChange={(e) => { setImageTemp(e.target.files[0]) }} />)
+                        }
+
                     </Col>
                 </Form.Group>
 
@@ -149,7 +185,7 @@ export default function RestaurantForm() {
                 <Row>
                     {foods && foods.map(function (object, i) {
                         if (!object.deleted) {
-                            return (<Col md={4}> <FoodCard name={object.name} description={object.description} food={object._id} restaurant={resId} handler={setFoods} /> </Col>);
+                            return (<Col md={4}> <FoodCard name={object.name} description={object.description} food={object._id} restaurant={resId} handler={setFoods} image={object.display_image} /> </Col>);
                         } else {
                             return " ";
                         }

@@ -4,6 +4,8 @@ import axios from 'axios';
 import API from "../config/api";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../utils/alert";
+import { upload } from "../utils/media";
+import { loadState } from "../utils/session";
 
 export default function FoodFormModal(props) {
 
@@ -14,17 +16,31 @@ export default function FoodFormModal(props) {
     const [description, setDescription] = useState();
     const [rating, setRating] = useState();
     const [price, setPrice] = useState();
+    const [img, setImg] = useState();
     const navigate = useNavigate();
 
 
     const addToForm = async () => {
         try {
-            let res = await axios.post(API.DOMAIN + '/api/restaurants/' + props.restaurant + '/foods', [{
+            let url = await upload(img);
+            let img_url = "";
+            if (url) {
+                img_url = url;
+            }
+
+            let args = [{
                 name: name,
                 price: price,
                 rating: rating,
-                description: description
-            }]);
+                description: description,
+                display_image: img_url
+            }]
+            console.log(args);
+            let res = await axios.post(API.DOMAIN + '/api/restaurants/' + props.restaurant + '/foods', args, {
+                headers: {
+                    "x-Authorization": loadState()['token']
+                }
+            });
             if (res.status === 201) {
                 setShow(false);
                 props.handler(res.data.data);
@@ -98,7 +114,9 @@ export default function FoodFormModal(props) {
                             Display Image
                         </Form.Label>
                         <Col sm="8">
-                            <Form.Control type="file" placeholder="Password" />
+                            <Form.Control type="file" placeholder="Choose a file" onChange={(e) => {
+                                setImg(e.target.files[0]);
+                            }} />
                         </Col>
                     </Form.Group>
                 </Modal.Body>
