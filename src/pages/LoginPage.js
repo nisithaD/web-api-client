@@ -124,6 +124,7 @@ export default function LoginPage(props) {
       }
 
     }).catch((error) => {
+      console.log(error);
       toaster(error.response.data.message, 'warn');
     })
   }

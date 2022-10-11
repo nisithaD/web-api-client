@@ -47,6 +47,7 @@ export default function Outlets() {
 
   const [restaurants, setRestaurants] = useState();
 
+
   useEffect(() => {
     (async function () {
       try {
@@ -99,7 +100,11 @@ export default function Outlets() {
           </Section>
         </Tab>
         <Tab eventKey="profile" title="Favourites">
-          <></>
+          <>
+          {/* {loadState() && loadState()['user'] && loadState()[user].favourites && restaurants && restaurants.map((res, i) => {
+            getRestaurantCard(favourites)
+          })} */}
+          </>
         </Tab>
       </Tabs>
 

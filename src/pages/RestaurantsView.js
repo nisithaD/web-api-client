@@ -1,5 +1,4 @@
 import { Container, Row, Col, Image } from 'react-bootstrap'
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { useLocation } from 'react-router-dom';
 import API from '../config/api';
@@ -7,9 +6,8 @@ import axios from 'axios';
 import { useEffect,useState } from 'react';
 import Places from '../components/Places'
 import styled from 'styled-components';
-import RatingStars from '../components/RatingStars';
 import FoodCardView from '../components/FoodCardView';
-import img from '../assets/hero-bg.jpg';
+
 
 const MapWrapper = styled.div`
     width: 100%;
@@ -29,15 +27,7 @@ h1{
     text-transform: uppercase;
   }
   `
-  const SectionWelcome = styled.div`
-    padding-top: 70px;
-    padding-bottom: 70px;
-    background-image: url(${img}) ;
-    background-position: 100% -155px;
-    background-repeat: no-repeat;
-    color: #fff;
-     
-  `
+
   const Section = styled.div`
   
   `
@@ -56,17 +46,20 @@ export default function RestaurantsView() {
     const [address, setAddress] = useState();
     const [lat,setLat] = useState();
     const [lng, setLng]= useState();
-    console.log({lat,lng});
+    
+
+
     useEffect(()=>{
         (async function(){
             try{
                 let rest  = await axios.get(API.DOMAIN + '/api/restaurants/'+ uid);
-                console.log(rest);
+              
                 if(rest.status === 200){
                    setName(rest.data.data.name);
                    setAddress(rest.data.data.address);
                    setLat(rest.data.data.location.lat);
                    setLng(rest.data.data.location.lng);
+                   setRestaurants(rest.data.data);
                 }else{
                     console.log(rest);
                 }
@@ -74,7 +67,7 @@ export default function RestaurantsView() {
                 console.log(e);
             }
         })()
-    },[])
+    },[uid])
   return (
     <>
     <Container>
@@ -83,7 +76,7 @@ export default function RestaurantsView() {
           <Col sm={9}>
               <h2>{name}</h2>
                <p>{address}</p> 
-               <RatingStars/>
+               {/* <RestaurantRating restaurant={restaurants}/> */}
           </Col>
       </Row>
       <Row className="mt-5">
@@ -97,21 +90,21 @@ export default function RestaurantsView() {
           <P100>
             <h3 className='text-center'>New Tastes</h3>
             <Row className="mt-5">
-              {restaurants && restaurants.map((uid, i) => {
-                let idx;
-                if (uid.foods.length > 0) {
-                  idx = Math.floor(Math.random() * (uid.foods.length - 0) + 0);
-                  console.log(uid.foods[idx].name)
+              {restaurants && restaurants.foods.map((food, i) => {
+                console.log(i);
+                if (food.length > 0) {
+                 
+                  let id = food.id;
+                  let display_image = food.display_image;
+                  let name = food.name;
+                  let description = food.description;
+                  
+                  let restaurant = restaurants._id;
+                  let price = food.price;
 
-                  let id = uid.foods[idx].id;
-                  let display_image = uid.foods[idx].display_image;
-                  let name = uid.foods[idx].name;
-                  let description = uid.foods[idx].description;
-                  let food = uid.foods[idx]._id;
-                  let restaurant = uid._id;
-                  let price = uid.foods[idx].price;
-
-                  return <Col md={3}> <FoodCardView id={id} display_image={display_image} name={name} description={description} food={food} restaurant={restaurant} price={price} /> </Col>
+                  return (<Col md={3}>
+                     <FoodCardView id={id} display_image={display_image} name={name} description={description} food={food} restaurant={restaurant} price={price} /> 
+                     </Col>)
                 } else {
                   return "";
                 }

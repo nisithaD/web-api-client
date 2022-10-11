@@ -41,7 +41,7 @@ export default function RestuarentCardView(props) {
                         {props.description}
                     </Card.Text>
                     <RestaurantRating restaurant={props} />
-                    <Button variant="warning" className="float-right" a href='/outlets/ResturentsViews'>View Foods</Button>
+                    <a href={"/outlets/view?id=" + props.id}  className="float-right btn btn-warning" >View Foods</a>
 
                     <Button variant="default" className="ms-2"> <i className="bi bi-heart" onClick={() => addToFavarite(props)}></i></Button>
                 </Card.Body>
