@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useReducer, useState} from "react";
 import {
     MDBBtn,
     MDBCard,
@@ -15,9 +15,11 @@ import axios from "axios";
 import API from "../config/api";
 import {loadState} from "../utils/session";
 import {decodeToken} from "react-jwt";
+import {toaster} from "../utils/alert";
 
 export default function Cart() {
     const [foods, setFoodItems] = useState();
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
     useEffect(() => {
         (async function () {
             let token = loadState()['token'];
@@ -37,7 +39,27 @@ export default function Cart() {
         })();
     }, []);
 
-    //todo have to complete
+    const removeItem = async (id) => {
+        let token = loadState()['token'];
+        let user_id = decodeToken(token)._id;
+        try {
+            let response = await axios.delete(API.DOMAIN + '/api/users/' + user_id + '/cart/' + id, {
+                headers: {
+                    "x-Authorization": loadState()['token']
+                }
+            });
+            if (response.data.statusCode === 200) {
+                let idx = foods.findIndex((x) => {
+                    return x._id === id;
+                });
+                foods.splice(idx, 1);
+                forceUpdate();
+                toaster('Item removed successfully', 'success');
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     return (
         <section className="h-100" style={{backgroundColor: "#eee"}}>
@@ -54,7 +76,7 @@ export default function Cart() {
                             <MDBCardBody className="p-4">
                                 {foods && foods.map((res, key,) => {
 
-                                        let food_id = res._id;
+                                        let item_id = res._id;
                                         let restaurant_id = foods[key].outlet;
                                         let price = foods[key].price;
                                         let qty = foods[key].qty;
@@ -66,7 +88,7 @@ export default function Cart() {
                                                               alt="Cotton T-shirt"/>
                                             </MDBCol>
                                             <MDBCol md="3" lg="3" xl="3">
-                                                <p className="lead fw-normal mb-2">{food_id}</p>
+                                                <p className="lead fw-normal mb-2">{item_id}</p>
                                                 <p>
                                                     <span className="text-muted">Price: </span>${price}
                                                     <span className="text-muted ms-3">Flavor: </span> Vanilla
@@ -89,10 +111,10 @@ export default function Cart() {
                                                     ${price*qty}
                                                 </MDBTypography>
                                             </MDBCol>
-                                            <MDBCol md="1" lg="1" xl="1" className="text-end">
-                                                <a href="#!" className="text-danger">
+                                            <MDBCol md="1" lg="1" xl="1" className="me-5">
+                                                <button onClick={() => removeItem(item_id)} className="btn btn-sm btn-danger">
                                                     Remove
-                                                </a>
+                                                </button>
                                             </MDBCol>
                                         </MDBRow>
                                     }
