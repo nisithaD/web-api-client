@@ -47,7 +47,6 @@ function App() {
 }
 const AuthCheck = (type, resolve, reject) => {
   if (loadState() && isExpired(loadState()['token'])) {
-    toaster('Session Expired Please login', 'warning')
     return (<Navigate to='/login' />);
   }
   return type() ? resolve : reject;
