@@ -17,6 +17,8 @@ import Outlets from './pages/Outlets';
 import Cart from './pages/Cart';
 import RestaurantsView from './pages/RestaurantsView';
 import Profile from './pages/Profile';
+import OrderSuccess from './pages/OrderSuccess';
+import Orders from './pages/Orders';
 
 
 function App() {
@@ -37,6 +39,8 @@ function App() {
             <Route exact path='/outlets/view' element={AuthCheck(isLoggedIn, (<RestaurantsView />), (<Navigate to='/login' />))} />
             <Route exact path='/cart' element={AuthCheck(isLoggedIn, (<Cart />), (<Navigate to='/login' />))} />
             <Route exact path='/my-profile' element={AuthCheck(isLoggedIn, (<Profile />), (<Navigate to='/login' />))} />
+            <Route exact path='/order-success' element={AuthCheck(isLoggedIn, (<OrderSuccess />), (<Navigate to='/login' />))} />
+            <Route exact path='/my-orders' element={AuthCheck(isLoggedIn, (<Orders />), (<Navigate to='/login' />))} />
             <Route path='*' element={<NoMatch />} />
           </Routes>
         </Layout>
