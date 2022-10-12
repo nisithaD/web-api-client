@@ -13,6 +13,7 @@ import AdminRestaurant from './pages/admin/AdminRestaurant';
 import AdminRestaurantEdit from './pages/admin/AdminRestaurantEdit';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminEditUsers from './pages/admin/AdminEditUsers';
+import AdminOrders from './pages/admin/AdminOrders';
 import Outlets from './pages/Outlets';
 import Cart from './pages/Cart';
 import RestaurantsView from './pages/RestaurantsView';
@@ -35,6 +36,7 @@ function App() {
             <Route exact path='/admin/restaurants/edit' element={AuthCheck(isAdmin, (<AdminRestaurantEdit />), (<Navigate to='/login' />))} />
             <Route exact path='/admin/users' element={AuthCheck(isAdmin, (<AdminUsers />), (<Navigate to='/login' />))} />
             <Route exact path='/admin/users/edit' element={AuthCheck(isAdmin, (<AdminEditUsers />), (<Navigate to='/login' />))} />
+            <Route exact path='/admin/orders' element={AuthCheck(isAdmin, (<AdminOrders />), (<Navigate to='/login' />))} />
             <Route exact path='/outlets' element={AuthCheck(isLoggedIn, (<Outlets />), (<Navigate to='/login' />))} />
             <Route exact path='/outlets/view' element={AuthCheck(isLoggedIn, (<RestaurantsView />), (<Navigate to='/login' />))} />
             <Route exact path='/cart' element={AuthCheck(isLoggedIn, (<Cart />), (<Navigate to='/login' />))} />

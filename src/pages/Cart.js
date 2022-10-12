@@ -18,9 +18,9 @@ import {decodeToken} from "react-jwt";
 import {toaster} from "../utils/alert";
 
 export default function Cart() {
-    let [foods,setFoods] = useState([]);
-    let [food_items,setFoodItems] = useState([]);
-    let [,forceUpdate] = useReducer(x => x + 1, 0);
+    let [foods, setFoods] = useState([]);
+    let [food_items, setFoodItems] = useState([]);
+    let [, forceUpdate] = useReducer(x => x + 1, 0);
     let [grandTotal, setGrandTotal] = useState(0);
 
     useEffect(() => {
@@ -41,20 +41,6 @@ export default function Cart() {
                         total += item.lineTotal;
                     });
                     setGrandTotal(total);
-
-                    //eslint-disable-next-line array-callback-return
-                    //get food items for each food
-                    response.data.data.map(async (item,index) => {
-                        let food_item = await axios.get(API.DOMAIN + '/api/restaurants/' + item.outlet + '/foods/' + item.food, {
-                            headers: {
-                                "x-Authorization": loadState()['token']
-                            }
-                        });
-                        if (food_item.status === 200) {
-                            food_items.push(food_item.data.data);
-                        }
-                    });
-                    setFoodItems(food_items);
                 }
             } catch (e) {
                 console.log(e);
@@ -110,7 +96,7 @@ export default function Cart() {
             let response = await axios.post(API.DOMAIN + '/api/orders', {
                 foods: foods,
                 total: grandTotal,
-                user_id:user_id,
+                user_id: user_id,
             }, {
                 headers: {
                     "x-Authorization": loadState()['token']
@@ -149,9 +135,7 @@ export default function Cart() {
                                         let price = foods[index].price;
                                         let qty = foods[index].qty;
                                         let line_total = foods[index].lineTotal;
-                                        let food_item = food_items[index];
 
-                                        console.log(food_item);
 
                                         return <MDBRow key={index}
                                                        className="justify-content-between align-items-center mb-3">
@@ -161,7 +145,7 @@ export default function Cart() {
                                                               alt="Cotton T-shirt"/>
                                             </MDBCol>
                                             <MDBCol md="3" lg="3" xl="3">
-                                                <p className="lead fw-normal mb-2"></p>
+                                                <p className="lead fw-normal mb-2">{item_id}</p>
                                                 <p>
                                                     <span className="text-muted">Price: </span>${price}
                                                     <span className="text-muted ms-3"></span>
