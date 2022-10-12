@@ -42,6 +42,8 @@ export default function RestaurantsView() {
 
     const search = useLocation().search;
     var uid = new URLSearchParams(search).get('id');
+
+    const [display_image, setdisplay_image] = useState();
     const [name, setName] = useState();
     const [address, setAddress] = useState();
     const [lat,setLat] = useState();
@@ -55,6 +57,7 @@ export default function RestaurantsView() {
                 let rest  = await axios.get(API.DOMAIN + '/api/restaurants/'+ uid);
               
                 if(rest.status === 200){
+                  setdisplay_image(rest.data.data.display_image);
                    setName(rest.data.data.name);
                    setAddress(rest.data.data.address);
                    setLat(rest.data.data.location.lat);
@@ -72,7 +75,7 @@ export default function RestaurantsView() {
     <>
     <Container>
       <Row>
-          <Col sm={3}><Image roundedCircle className='w-100' src='/placeholder.png'/></Col>
+          <Col sm={3}><Image roundedCircle className='w-100' src={display_image || '/placeholder.png'}/></Col>
           <Col sm={9}>
               <h2>{name}</h2>
                <p>{address}</p> 

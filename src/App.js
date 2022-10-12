@@ -38,6 +38,7 @@ function App() {
             <Route exact path='/outlets' element={AuthCheck(isLoggedIn, (<Outlets />), (<Navigate to='/login' />))} />
             <Route exact path='/outlets/view' element={AuthCheck(isLoggedIn, (<RestaurantsView />), (<Navigate to='/login' />))} />
             <Route exact path='/cart' element={AuthCheck(isLoggedIn, (<Cart />), (<Navigate to='/login' />))} />
+            <Route exact path='/wishlist' element={AuthCheck(isLoggedIn, (<Cart />), (<Navigate to='/login' />))} />
             <Route exact path='/my-profile' element={AuthCheck(isLoggedIn, (<Profile />), (<Navigate to='/login' />))} />
             <Route exact path='/order-success' element={AuthCheck(isLoggedIn, (<OrderSuccess />), (<Navigate to='/login' />))} />
             <Route exact path='/my-orders' element={AuthCheck(isLoggedIn, (<Orders />), (<Navigate to='/login' />))} />

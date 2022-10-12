@@ -7,7 +7,6 @@ import axios from 'axios';
 import API from '../config/api';
 import { loadState } from '../utils/session';
 import RestuarentCardView from '../components/RestuarentCardView';
-import { useNavigate, useLocation } from 'react-router-dom';
 
 const Wrapper = styled.div`
 padding-top: 50px;
@@ -23,6 +22,9 @@ h3{
   display:flex;
   justify-content:center;
   border: none;
+  &:hover{
+    border:none;
+  }
 }
 .nav-link{
   text-transform: uppercase;
@@ -46,25 +48,63 @@ export default function Outlets() {
 
 
   const [restaurants, setRestaurants] = useState();
-
+  const [favs, setFavs] = useState();
 
   useEffect(() => {
-    (async function () {
+    const loadData = async () => {
       try {
-        let usrs = await axios.get(API.DOMAIN + '/api/restaurants', {
+        let rs = await axios.get(API.DOMAIN + '/api/restaurants', {
+          headers: {
+            "x-Authorization": loadState()['token']
+          }
+        });
+        if (rs.status === 200) {
+          setRestaurants(rs.data.data);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    // Get logged in user data
+    let uid = loadState()['user']._id;
+
+    const loadUser = async () => {
+      try {
+        let usrs = await axios.get(API.DOMAIN + '/api/users/' + uid, {
           headers: {
             "x-Authorization": loadState()['token']
           }
         });
         if (usrs.status === 200) {
-          setRestaurants(usrs.data.data);
-
+          setFavs(usrs.data.data.favourites);
         }
       } catch (e) {
         console.log(e);
       }
-    })();
+    }
+
+    loadData();
+    loadUser();
+
   }, []);
+
+  const getRestauntCard = (x) => {
+    let idx = restaurants.findIndex((k) => {
+      return k._id === x;
+    })
+    if (idx !== -1) {
+      let res = restaurants[idx];
+      let id = res._id;
+      let display_image = res.display_image;
+      let name = res.name;
+      let address = res.address;
+      let rating = res.rating;
+      return <Col key={res._id} md={3}> <RestuarentCardView type={"favourite"} id={id} display_image={display_image} name={name} address={address} rating={rating} /> </Col>
+    } else {
+      return "";
+    }
+  }
+
   return (
 
     <Wrapper>
@@ -73,11 +113,10 @@ export default function Outlets() {
         id="uncontrolled-tab-example"
         className="mb-3"
       >
-        <Tab eventKey="home" title="All">
+        <Tab eventKey="home" title="All Outlets">
           <Section>
             <Container>
               <P100>
-                <h3 className='text-center'>RestaurantS</h3>
                 <Row className="mt-5">
                   {restaurants && restaurants.map((res, i) => {
 
@@ -88,7 +127,7 @@ export default function Outlets() {
                       let name = res.name;
                       let address = res.address;
                       let rating = res.rating;
-                      return <Col md={3}> <RestuarentCardView id={id} display_image={display_image} name={name} address={address} rating={rating} /> </Col>
+                      return <Col key={res._id} md={3}> <RestuarentCardView id={id} display_image={display_image} name={name} address={address} rating={rating} /> </Col>
                     } else {
                       return "";
                     }
@@ -99,12 +138,19 @@ export default function Outlets() {
             </Container>
           </Section>
         </Tab>
-        <Tab eventKey="profile" title="Favourites">
-          <>
-          {/* {loadState() && loadState()['user'] && loadState()[user].favourites && restaurants && restaurants.map((res, i) => {
-            getRestaurantCard(favourites)
-          })} */}
-          </>
+        <Tab eventKey="profile" title="Favourite Outlets">
+          <Section>
+            <Container>
+              <P100>
+                <Row className="mt-5">
+                  {favs && favs.map((x, i) => {
+                    return (<>{getRestauntCard(x)}</>);
+                  })
+                  }
+                </Row>
+              </P100>
+            </Container>
+          </Section>
         </Tab>
       </Tabs>
 
