@@ -7,6 +7,7 @@ import axios from 'axios';
 import API from '../config/api';
 import { loadState } from '../utils/session';
 import RestuarentCardView from '../components/RestuarentCardView';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Wrapper = styled.div`
 padding-top: 50px;
@@ -45,6 +46,7 @@ export default function Outlets() {
 
 
   const [restaurants, setRestaurants] = useState();
+
 
   useEffect(() => {
     (async function () {
@@ -98,7 +100,11 @@ export default function Outlets() {
           </Section>
         </Tab>
         <Tab eventKey="profile" title="Favourites">
-          <></>
+          <>
+          {/* {loadState() && loadState()['user'] && loadState()[user].favourites && restaurants && restaurants.map((res, i) => {
+            getRestaurantCard(favourites)
+          })} */}
+          </>
         </Tab>
       </Tabs>
 
