@@ -8,7 +8,6 @@ import {toaster} from '../../utils/alert';
 
 
 export default function AdminOrders() {
-    const [key, setKey] = useState('home');
     const [orders, setOrders] = useState();
     const [, forceUpdate] = useReducer(x => x + 1, 0);
 
@@ -21,9 +20,9 @@ export default function AdminOrders() {
                         "x-Authorization": loadState()['token']
                     }
                 });
-
                 if (orders.status === 200) {
                     setOrders(orders.data.orders);
+                    console.log(orders.data.orders);
                 }
             } catch (e) {
                 console.log(e);
