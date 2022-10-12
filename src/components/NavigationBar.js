@@ -28,7 +28,7 @@ export default function NavgigationBar() {
               </Dropdown.Toggle>
 
               <Dropdown.Menu className='bg-dark text-white'>
-                <Dropdown.Item href="#/action-1" className="text-warning">My Orders</Dropdown.Item>
+                <Dropdown.Item href="/my-orders" className="text-warning">My Orders</Dropdown.Item>
                 {isLoggedIn() ?
                   (<>
                     <Dropdown.Item href="/my-profile" className="text-warning">My Profile</Dropdown.Item>
