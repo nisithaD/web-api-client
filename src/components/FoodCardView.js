@@ -65,12 +65,13 @@ export default function FoodCardView(props) {
     return (
         <Wrapper>
             <Card className="mb-4">
-                <Card.Img width="300px" height="250px" variant="top" src={props.display_image || "/placeholder.png"} />
+                <Card.Img width="300px" height="250px" variant="top" src={props.image || "/placeholder.png"} />
 
                 <Card.Body>
                     <Card.Title>{props.name}</Card.Title>
                     <Card.Text>
                         {props.description}
+                        
                     </Card.Text>
                     <FoodRating food={props.item} restaurant={props.parent} />
                     <Button variant="warning" className="float-right" onClick={() => addToCart(props)}>Add Cart</Button>

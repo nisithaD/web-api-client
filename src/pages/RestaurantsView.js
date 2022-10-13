@@ -95,10 +95,10 @@ export default function RestaurantsView() {
                   let id = object.id;
                   let name = object.name;
                   let description = object.description;
-                  let display_image = object.display_image;                 
+                  let image = object.display_image;                 
                   let price = object.price;
                   return <Col md={3}> <FoodCardView item={object} parent={restaurants} id={id} name={name} 
-                  description={description} price={price} display_image={display_image} /> </Col>
+                  description={description} price={price} image={image} /> </Col>
             
               })}
             </Row>
