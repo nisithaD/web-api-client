@@ -24,16 +24,13 @@ export default function Orders() {
             // eslint-disable-next-line react-hooks/exhaustive-deps
             let user = decodeToken(token);
             setUser(user);
-
             try {
                 let orders = await axios.get(API.DOMAIN + '/api/orders/user/' + user._id, {
                     headers: {
                         "x-Authorization": loadState()['token']
                     }
                 });
-
                 if (orders.status === 200) {
-
                     setOrders(orders.data.orders);
                 }
             } catch (e) {

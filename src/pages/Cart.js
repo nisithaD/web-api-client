@@ -111,6 +111,8 @@ export default function Cart() {
                 //redirect to order success page
                 window.location.href = '/order-success';
                 toaster(response.data.message, 'success');
+            }else {
+                toaster(response.data.message, 'error');
             }
         } catch (e) {
             console.log(e);
