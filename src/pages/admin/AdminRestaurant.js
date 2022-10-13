@@ -22,14 +22,12 @@ export default function AdminRestaurant() {
                         "x-Authorization": loadState()['token']
                     }
                 });
-
-                if (restaurants.status === 200) {
+               if (restaurants.status === 200) {
                     setrestaurants(restaurants.data.data);
                 }
             } catch (e) {
                 console.log(e);
-                toaster('Something went wrong during loading data', 'error');
-            }
+                toaster('Something went wrong during loading data', 'error');            }
         })();
     }, []);
 
@@ -100,7 +98,8 @@ export default function AdminRestaurant() {
                                                         <td>{rst.name}</td>
                                                         <td>{rst.rating}</td>
                                                         <td>
-                                                            <a className="text-decoration-none" href={"/admin/restaurants/edit?id=" + rst._id} ><i className="bi bi-pencil-square"></i> </a>
+                                                            <a className="text-decoration-none" href={"/admin/restaurants/edit?id=" + rst._id} >
+                                                                <i className="bi bi-pencil-square"></i> </a>
                                                             <a className="text-decoration-none ms-2" href="#/" onClick={(e) => {
                                                                 e.preventDefault();
                                                                 deleteRestaurant(rst._id);

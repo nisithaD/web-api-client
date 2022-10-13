@@ -75,6 +75,7 @@ export default function RestaurantsView() {
     <>
     <Container>
       <Row>
+      <Row></Row>
           <Col sm={3}><Image roundedCircle className='w-100' src={display_image || '/placeholder.png'}/></Col>
           <Col sm={9}>
               <h2>{name}</h2>
@@ -83,31 +84,27 @@ export default function RestaurantsView() {
           </Col>
       </Row>
       <Row className="mt-5">
-        <Col sm={3}>
-            <Card >
-            <Card.Body>
 
-            <Wrapper>
-      <Section>
+            <Section>
         <Container>
           <P100>
             <h3 className='text-center'>New Tastes</h3>
             <Row className="mt-5">
-              {restaurants && restaurants.foods.map((food, i) => {
-                console.log(i);
-                if (food.length > 0) {
-                 
-                  let id = food.id;
-                  let display_image = food.display_image;
-                  let name = food.name;
-                  let description = food.description;
-                  
-                  let restaurant = restaurants._id;
-                  let price = food.price;
 
-                  return (<Col md={3}>
-                     <FoodCardView id={id} display_image={display_image} name={name} description={description} food={food} restaurant={restaurant} price={price} /> 
-                     </Col>)
+         
+
+              { restaurants && restaurants.foods && restaurants.foods.map((object, i) => {
+               
+                if (object.length > 0) {
+                  
+
+                  let id = object.id;
+                  let name = object.name;
+                  let description = object.description;
+                  let image = object.display_image;                 
+                  let price = object.price;
+
+                  return <Col md={3}> <FoodCardView item={object} parent={restaurants} id={id} name={name} description={description} price={price} image={image} /> </Col>
                 } else {
                   return "";
                 }
@@ -117,11 +114,6 @@ export default function RestaurantsView() {
           </P100>
         </Container>
       </Section>
-    </Wrapper >
-
-            </Card.Body>
-            </Card>
-        </Col>
         <Col sm={3}>
   
         </Col>

@@ -37,6 +37,7 @@ export default function RestuarentCardView(props) {
     return (
         <Wrapper>
             <Card className="mb-4" >
+              
                 <Card.Img width="300px" height="250px" variant="top" src={props.display_image || "/placeholder.png"} />
                 <Card.Body >
                     <Card.Title>{props.name}</Card.Title>
