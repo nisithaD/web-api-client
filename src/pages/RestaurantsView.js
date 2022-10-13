@@ -91,24 +91,15 @@ export default function RestaurantsView() {
             <h3 className='text-center'>New Tastes</h3>
             <Row className="mt-5">
 
-         
-
-              { restaurants && restaurants.foods && restaurants.foods.map((object, i) => {
-               
-                if (object.length > 0) {
-                  
-
+              { restaurants && restaurants.foods && restaurants.foods.map((object, i) => {                
                   let id = object.id;
                   let name = object.name;
                   let description = object.description;
-                  let image = object.display_image;                 
+                  let display_image = object.display_image;                 
                   let price = object.price;
-
-                  return <Col md={3}> <FoodCardView item={object} parent={restaurants} id={id} name={name} description={description} price={price} image={image} /> </Col>
-                } else {
-                  return "";
-                }
-
+                  return <Col md={3}> <FoodCardView item={object} parent={restaurants} id={id} name={name} 
+                  description={description} price={price} display_image={display_image} /> </Col>
+            
               })}
             </Row>
           </P100>

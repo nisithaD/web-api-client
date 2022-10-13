@@ -45,7 +45,7 @@ export default function RestuarentCardView(props) {
                         {props.description}
                     </Card.Text>
                     <RestaurantRating restaurant={props} />
-                    <a href={"/outlets/view?id=" + props.id} className="float-right btn btn-warning" >View Foods</a>
+                    <a href={"/outlets/view?id=" + props.id} className="float-right btn btn-warning" >View </a>
                     <Button variant="default" className="ms-2"> {
                         props.type && props.type === 'favourite' ? <i className="bi bi-heartbreak" onClick={() => removeFromFavarite(props.id)}></i> : (<i className="bi bi-heart" onClick={() => addToFavarite(props.id)}></i>)
                     }

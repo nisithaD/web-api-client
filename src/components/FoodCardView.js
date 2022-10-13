@@ -48,7 +48,8 @@ export default function FoodCardView(props) {
                 qty: 1,
                 price: props.price,
                 outlet: props.restaurant,
-                lineTotal: props.price
+                lineTotal: props.price,
+                
             }, {
                 headers: {
                     "x-Authorization": loadState()['token']
@@ -64,7 +65,7 @@ export default function FoodCardView(props) {
     return (
         <Wrapper>
             <Card className="mb-4">
-                <Card.Img width="300px" height="250px" variant="top" src={props.image || "/placeholder.png"} />
+                <Card.Img width="300px" height="250px" variant="top" src={props.display_image || "/placeholder.png"} />
 
                 <Card.Body>
                     <Card.Title>{props.name}</Card.Title>
