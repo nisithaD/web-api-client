@@ -1,0 +1,98 @@
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import styled from 'styled-components';
+import RestaurantRating from './RestaurantRating';
+import API from '../config/api';
+import axios from 'axios';
+import { loadState } from '../utils/session';
+import { decodeToken } from "react-jwt";
+
+const Wrapper = styled.div`
+    .card-body{
+        background: #404144;
+        color: #fff;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;    
+    }
+    .bi{
+        color: #fff;
+        font-size: 17px;
+        &:hover{
+            color:red;  
+            &:before{
+                content: "\f415";
+            }
+        }
+    }
+
+`
+export default function RestuarentCardView(props) {
+    return (
+        <Wrapper>
+            <Card className="mb-4" onClick={() => ViewFood(props)} >
+
+
+                <Card.Img width="300px" height="250px" variant="top" src={props.display_image || "/placeholder.png"} />
+
+
+                <Card.Body >
+                    <Card.Title>{props.name}</Card.Title>
+                    <Card.Text>
+                        {props.description}
+                    </Card.Text>
+<<<<<<< HEAD
+                    <RatingStars />
+                    <Button variant="warning" className="float-right" a href='/outlets/view?id='>View</Button>
+                    
+                    <Button variant="default" className="ms-2"> <i className="bi bi-heart"  onClick={() =>addToFavarite(props)}></i></Button>
+=======
+                    <RestaurantRating restaurant={props} />
+                    <Button variant="warning" className="float-right" a href='/outlets/ResturentsViews'>View Foods</Button>
+
+                    <Button variant="default" className="ms-2"> <i className="bi bi-heart" onClick={() => addToFavarite(props)}></i></Button>
+>>>>>>> temp
+                </Card.Body>
+            </Card>
+        </Wrapper>
+    )
+
+
+}
+//palamkubura
+async function addToFavarite(props) {
+    //jwt token decode
+    let token = loadState()['token'];
+    let user_id = decodeToken(token)._id;
+    try {
+        let res = await axios.post(API.DOMAIN + '/api/users/' + user_id + '/cart', {
+            "outlet": props.restaurant_id,
+            "food": props.id,
+            "quantity": 1,
+            "price": props.price,
+            "lineTotal": props.price
+        }, {
+            headers: {
+                "x-Authorization": loadState()['token']
+            }
+        });
+        if (res.status === 200) {
+            alert("Added to cart");
+        }
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+//rumesh
+async function ViewFood(props) {
+    //jwt token decode
+    //  <a href='/outlets/restuarentFoods'></a>   
+
+
+    let usrs = await axios.get(API.DOMAIN + '/outlets/restuarentFoods', {
+        headers: {
+            "x-Athorization": loadState()['token']
+        }
+    });
+}
+

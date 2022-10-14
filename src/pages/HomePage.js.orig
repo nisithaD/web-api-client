@@ -80,6 +80,7 @@ export default function HomePage() {
                   idx = Math.floor(Math.random() * (object.foods.length - 0) + 0);
 
                   let id = object.foods[idx].id;
+                  let display_image = object.foods[idx].display_image;
                   let name = object.foods[idx].name;
                   let description = object.foods[idx].description;
                   let image = object.foods[idx].display_image;
@@ -87,7 +88,11 @@ export default function HomePage() {
                   let restaurant = object._id;
                   let price = object.foods[idx].price;
 
+<<<<<<< HEAD
+                  return <Col md={3}> <FoodCardView id={id} display_image={display_image} name={name} description={description} food={food} restaurant={restaurant} price={price} /> </Col>
+=======
                   return <Col md={3}> <FoodCardView item={object.foods[idx]} parent={object} id={id} name={name} description={description} food={food} restaurant={restaurant} price={price} image={image} /> </Col>
+>>>>>>> temp
                 } else {
                   return "";
                 }
